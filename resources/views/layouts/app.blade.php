@@ -22,6 +22,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
         apply the skin class to the body tag so the changes take effect. -->
   <link rel="stylesheet" href="{{ asset('dist/css/skins/skin-blue.min.css') }}">
 
+  <link rel="stylesheet" href="{{ asset('style.css') }}">
+
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -184,7 +186,7 @@ desired effect
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
               <li class="user-header">
-                <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
 
                 <p>
                   {{ auth()->user()->name }} - Web Developer
@@ -239,7 +241,7 @@ desired effect
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+          <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
           <p>{{ auth()->user()->name }}</p>
@@ -264,8 +266,8 @@ desired effect
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Manage Roles</span></a></li>
-        <li><a href="#"><i class="fa fa-link"></i> <span>Manage Permissions</span></a></li>
+        <li class="active"><a href="{{ route('roles.index') }}"><i class="fa fa-link"></i> <span>Manage Roles</span></a></li>
+        <li><a href="{{ route('permissions.index')}}"><i class="fa fa-link"></i> <span>Manage Permissions</span></a></li>
 
 
         <li class="treeview">
@@ -275,8 +277,8 @@ desired effect
               </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#">Create User</a></li>
-            <li><a href="#">User List</a></li>
+            <li><a href="{{ route('users.create')}}">Create User</a></li>
+            <li><a href="{{ route('users.index')}}">User List</a></li>
           </ul>
         </li>
 
@@ -287,8 +289,8 @@ desired effect
               </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#">Create Post</a></li>
-            <li><a href="#">Post List</a></li>
+            <li><a href="{{ route('posts.create') }}">Create Post</a></li>
+            <li><a href="{{ route('posts.index') }}">Post List</a></li>
           </ul>
         </li>        
 
@@ -401,11 +403,11 @@ desired effect
 <!-- REQUIRED JS SCRIPTS -->
 
 <!-- jQuery 3 -->
-<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
 <!-- Bootstrap 3.3.7 -->
-<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="{{ asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 <!-- AdminLTE App -->
-<script src="dist/js/adminlte.min.js"></script>
+<script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
