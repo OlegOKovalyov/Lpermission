@@ -5,7 +5,7 @@
 
 @section('content')
 
-<div class="col-lg-10 col-lg-offset-1">
+<div class="roles">
     <h1><i class="fa fa-key"></i> Roles
 
     <a href="{{ route('users.index') }}" class="btn btn-default pull-right">Users</a>

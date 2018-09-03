@@ -1,3 +1,15 @@
 p.teaser {
     text-indent: 30px; 
     }
+
+@media only screen and (min-width: 1200px) {
+    .user-administration,
+    .roles,
+    .available-permissions {
+        margin-left: 1rem;
+    }
+}
+
+.post {
+	margin: 0 1rem;
+}
