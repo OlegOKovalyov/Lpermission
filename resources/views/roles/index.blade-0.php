@@ -30,7 +30,11 @@
 
                     <td>{{ str_replace(array('[',']','"'),'', $role->permissions()->pluck('name')) }}</td>{{-- Retrieve array of permissions associated to a role and convert to string --}}
                     <td>
-                    <a href="{{ URL::to('roles/'.$role->id.'/edit') }}" data-id="{{ $role->id}}" class="btn btn-info pull-left" data-toggle="modal" data-target="#roleEditModal" style="margin-right: 3px;">Edit</a>
+                    <a href="{{ URL::to('roles/'.$role->id.'/edit') }}" class="btn btn-info pull-left" data-toggle="modal" data-target="#roleEditModal" style="margin-right: 3px;">Edit</a>
+
+                    {!! Form::open(['method' => 'DELETE', 'route' => ['roles.destroy', $role->id] ]) !!}
+                    {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                    {!! Form::close() !!}
 
                     {!! Form::open(['method' => 'DELETE', 'route' => ['roles.destroy', $role->id], 'class' =>'form-inline form-delete']) !!}
                     {!! Form::submit('Delete', ['class' => 'btn btn-danger delete', 'name' => 'delete_modal']) !!}
@@ -72,15 +76,29 @@
                    <h1><i class='fa fa-scissors'></i> Delete Confirmation</h1>
                 </div>
                 <div class="modal-body">
-                    <p class="lead">Are you sure you, want to delete {{$role->name}}?</p>
+                    <p>Are you sure you, want to delete?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-danger" id="delete-btn">Delete</button>
+                    <button type="button" class="btn btn-sm btn-primary" id="delete-btn">Delete</button>
                     <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
     </div>    
+
+   
+
+<!-- <script type="text/javascript">
+    $(document).ready(function () {        
+        $('[data-toggle=confirmation]').confirmation({
+            rootSelector: '[data-toggle=confirmation]',
+            onConfirm: function (event, element) {
+                element.closest('form').submit();
+            }
+        });   
+    });
+</script> -->
+
 
 </div>
 

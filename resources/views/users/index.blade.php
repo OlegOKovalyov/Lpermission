@@ -44,7 +44,16 @@
         </table>
     </div>
 
-    <a href="{{ route('users.create') }}" class="btn btn-success">Add User</a>
+    <!-- <a href="{{ route('users.create') }}" class="btn btn-success">Add User</a> -->
+    <a href="{{ route('users.create')}}" class="btn btn-success" data-toggle="modal" data-target="#userModal">Add User</a>
+
+    <!-- Modal -->
+    <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        </div>
+      </div>
+    </div> 
 
 </div>
 

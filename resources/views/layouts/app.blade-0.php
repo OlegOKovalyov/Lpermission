@@ -277,7 +277,7 @@ desired effect
               </span>
           </a>
           <ul class="treeview-menu">
-            <!-- <li><a href="{{ route('users.create')}}">Create User</a></li> -->
+            <li><a href="{{ route('users.create')}}">Create User</a></li>
             <li><a href="{{ route('users.create')}}" data-toggle="modal" data-target="#myModal">Create User</a></li>
             <li><a href="{{ route('users.index')}}">User List</a></li>
             <!-- <li><a href="{{ route('users.index')}}" data-toggle="modal" data-target="#myModal">User List</a></li> -->
@@ -405,6 +405,17 @@ desired effect
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
+<!--       <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div> -->
     </div>
   </div>
 </div> 
@@ -416,20 +427,6 @@ desired effect
 
 <!-- jQuery 3 -->
 <script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
-
-<script>
-$(document).ready(function(){
-    $('table[data-form="deleteForm"]').on('click', '.form-delete', function(e){
-        e.preventDefault();
-        var $form=$(this);
-        $('#confirm').modal({ backdrop: 'static', keyboard: false })
-            .on('click', '#delete-btn', function(){
-                $form.submit();
-            });
-    }); 
-});    
-</script> 
-
 <!-- Bootstrap 3.3.7 -->
 <script src="{{ asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 <!-- AdminLTE App -->

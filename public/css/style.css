@@ -13,3 +13,7 @@ p.teaser {
 .post {
 	margin: 0 1rem;
 }
+
+.modal-window {
+	padding: 3rem;
+}

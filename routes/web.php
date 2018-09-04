@@ -36,10 +36,10 @@ Route::resource('posts', 'PostController');
 
 // Route::get('/create_role_permission', function() {
 
-// 	$role = Role::create(['name' => 'Administer']);
-// 	$permission = Permission::create(['name' => 'Administer roles & permissions']);
-// 	auth()->user()->assignRole('Administer');
-// 	auth()->user()->givePermissionTo('Administer roles & permissions');
+//  	$role = Role::create(['name' => 'Administer']);
+//  	$permission = Permission::create(['name' => 'Administer roles & permissions']);
+//  	auth()->user()->assignRole('Administer');
+//  	auth()->user()->givePermissionTo('Administer roles & permissions');
 
 
-// });
+//  });

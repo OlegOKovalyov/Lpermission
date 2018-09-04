@@ -1,5 +1,10 @@
+@extends('layouts.app')
 
-<div class='modal-window'>
+@section('title', '| Add Role')
+
+@section('content')
+
+<div class='col-lg-4 col-lg-offset-4'>
 
     <h1><i class='fa fa-key'></i> Add Role</h1>
     <hr>
@@ -26,3 +31,5 @@
     {{ Form::close() }}
 
 </div>
+
+@endsection
