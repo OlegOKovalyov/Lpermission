@@ -435,6 +435,8 @@ $(document).ready(function(){
 <!-- AdminLTE App -->
 <script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
 
+            <script src="{{asset('js/ajax-crud.js')}}"></script>
+
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. -->

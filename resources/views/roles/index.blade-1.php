@@ -38,89 +38,11 @@
 
                     </td>
                 </tr>
-@endforeach
-<tr>
-    <th>Role</th>
-    <th>Permissions</th>
-    <th>Operation</th>
-</tr>                
-@foreach ($roles as $role)
-<tr id="role{{$role->id}}">
-    <td>{{$role->name}}</td>
-    <td>{{ str_replace(array('[',']','"'),'', $role->permissions()->pluck('name')) }}</td>
-    <td>
-        <button class="btn btn-info btn-detail open-modal" value="{{$role->id}}">Edit</button>
-        <button class="btn btn-danger btn-delete delete-role" value="{{$role->id}}">Delete</button>
-    </td>
-</tr>
-@endforeach
+                @endforeach
             </tbody>
 
         </table>
-
-<!-- Modal (Pop up when detail button clicked) -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                <h4 class="modal-title" id="myModalLabel">Role Editor</h4>
-            </div>
-            <div class="modal-body">
-                <form id="frmTasks" name="frmTasks" class="form-horizontal" novalidate="">
-
-<div class='modal-window'>
-    <?php $permissions = $role->permissions; echo $permissions[0]; ?>
-    <?php //$permissions = Permission::all(); ?>
-    <?php //$permissions = $role->id; ?>
-    <h1><i class='fa fa-key'></i> Edit Role: {{$role->name}}</h1>
-    <hr>
-
-    {{ Form::model($role, array('route' => array('roles.update', $role->id), 'method' => 'PUT' )) }}
-
-        {{ Form::label('name', 'Role Name') }}
-        {{ Form::text('name', null, array('class' => 'form-control')) }}
-
-    <h5><b>Assign Permissions</b></h5> 
-    <?php //$i=0; ?>
-    @foreach ($permissions as $permission) <?php echo $permission; ?>
-
-        {{Form::checkbox('permissions[]',  $permission->id, $role->permissions ) }}
-        {{Form::label($permission->name, ucfirst($permission->name)) }}<br>
-    <?php //$i++; ?>
-    @endforeach
-    <br>
-    {{ Form::submit('Edit', array('class' => 'btn btn-primary')) }}
-
-    {{ Form::close() }}    
-</div>                     
-
-                    <div class="form-group error">
-                        <label for="inputRole" class="col-sm-3 control-label">Role Name</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control has-error" id="role" name="name" placeholder="{{$role->name}}" value="">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-3 control-label">Description</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" id="description" name="description" placeholder="Description" value="">
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="btn-save" value="add">Save changes</button>
-                <input type="hidden" id="task_id" name="task_id" value="0">
-            </div>
-        </div>
     </div>
-</div>
-
-
-    </div><!-- .table-responsive -->
 
    <!--  <a href="{{ URL::to('roles/create') }}" class="btn btn-success">Add Role</a> -->
     <a href="{{ URL::to('roles/create') }}" class="btn btn-success" data-toggle="modal" data-target="#roleModal">Add Role</a>
