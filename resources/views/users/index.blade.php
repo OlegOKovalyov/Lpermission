@@ -9,7 +9,7 @@
     <a href="{{ route('permissions.index') }}" class="btn btn-default pull-right">Permissions</a></h1>
     <hr>
     <div class="table-responsive">
-        <table class="table table-bordered table-striped">
+        <table class="table table-bordered table-striped" data-toggle="dataTable" data-form="deleteForm">
 
             <thead>
                 <tr>
@@ -30,10 +30,10 @@
                     <td>{{ $user->created_at->format('F d, Y h:ia') }}</td>
                     <td>{{  $user->roles()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of roles associated to a user and convert to string --}}
                     <td>
-                    <a href="{{ route('users.edit', $user->id) }}" class="btn btn-info pull-left" style="margin-right: 3px;">Edit</a>
+                    <a href="{{ route('users.edit', $user->id) }}" data-id="{{ $user->id}}" class="btn btn-info pull-left" data-toggle="modal" data-target="#userEditModal" style="margin-right: 3px;">Edit</a>
 
-                    {!! Form::open(['method' => 'DELETE', 'route' => ['users.destroy', $user->id] ]) !!}
-                    {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                    {!! Form::open(['method' => 'DELETE', 'route' => ['users.destroy', $user->id],  'class' =>'form-inline form-delete' ]) !!}
+                    {!! Form::submit('Delete', ['class' => 'btn btn-danger delete', 'name' => 'delete_modal']) !!}
                     {!! Form::close() !!}
 
                     </td>
@@ -54,6 +54,33 @@
         </div>
       </div>
     </div> 
+
+    <!-- Modal -->
+    <div class="modal fade" id="userEditModal" tabindex="-1" role="dialog" aria-labelledby="userEditModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="confirm">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                   <!--  <h4 class="modal-title">Delete Confirmation</h4> -->
+                   <h1><i class='fa fa-scissors'></i> Delete Confirmation</h1>
+                </div>
+                <div class="modal-body">
+                    <p class="lead">Are you sure you, want to delete {{$user->name}}?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-danger" id="delete-btn">Delete</button>
+                    <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>          
 
 </div>
 

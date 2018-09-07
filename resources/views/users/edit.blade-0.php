@@ -1,5 +1,12 @@
+{{-- \resources\views\users\edit.blade.php --}}
 
-<div class='modal-window'>
+@extends('layouts.app')
+
+@section('title', '| Edit User')
+
+@section('content')
+
+<div class='col-lg-4 col-lg-offset-4'>
 
     <h1><i class='fa fa-user-plus'></i> Edit {{$user->name}}</h1>
     <hr>
@@ -43,3 +50,5 @@
     {{ Form::close() }}
 
 </div>
+
+@endsection

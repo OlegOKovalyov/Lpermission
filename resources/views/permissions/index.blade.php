@@ -12,7 +12,7 @@
     <a href="{{ route('roles.index') }}" class="btn btn-default pull-right">Roles</a></h1>
     <hr>
     <div class="table-responsive">
-        <table class="table table-bordered table-striped">
+        <table class="table table-bordered table-striped" data-toggle="dataTable" data-form="deleteForm">
 
             <thead>
                 <tr>
@@ -27,8 +27,8 @@
                     <td>
                     <a href="{{ URL::to('permissions/'.$permission->id.'/edit') }}" class="btn btn-info pull-left" data-toggle="modal" data-target="#permissionEditModal" style="margin-right: 3px;">Edit</a>
 
-                    {!! Form::open(['method' => 'DELETE', 'route' => ['permissions.destroy', $permission->id] ]) !!}
-                    {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                    {!! Form::open(['method' => 'DELETE', 'route' => ['permissions.destroy', $permission->id], 'class' =>'form-inline form-delete' ]) !!}
+                    {!! Form::submit('Delete', ['class' => 'btn btn-danger delete', 'name' => 'delete_modal']) !!}
                     {!! Form::close() !!}
 
                     </td>
@@ -55,7 +55,26 @@
         <div class="modal-content">
         </div>
       </div>
-    </div>  
+    </div>
+
+    <div class="modal fade" id="confirm">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                   <!--  <h4 class="modal-title">Delete Confirmation</h4> -->
+                   <h1><i class='fa fa-scissors'></i> Delete Confirmation</h1>
+                </div>
+                <div class="modal-body">
+                    <p class="lead">Are you sure you, want to delete {{$permission->name}}?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-danger" id="delete-btn">Delete</button>
+                    <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>        
 
 </div>
 
