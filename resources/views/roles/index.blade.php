@@ -45,7 +45,7 @@
     <th>Operation</th>
 </tr>                
 @foreach ($roles as $role)
-<tr id="role{{$role->id}}">
+<tr id="role-{{$role->id}}">
     <td>{{$role->name}}</td>
     <td>{{ str_replace(array('[',']','"'),'', $role->permissions()->pluck('name')) }}</td>
     <td>
@@ -67,10 +67,10 @@
                 <h4 class="modal-title" id="myModalLabel">Role Editor</h4>
             </div>
             <div class="modal-body">
-                <form id="frmTasks" name="frmTasks" class="form-horizontal" novalidate="">
+                <!-- <form id="frmTasks" name="frmTasks" class="form-horizontal" novalidate=""> -->
 
 <div class='modal-window'>
-    <?php $permissions = $role->permissions; echo $permissions[0]; ?>
+    <?php $permissions = $role->permissions; ?>
     <?php //$permissions = Permission::all(); ?>
     <?php //$permissions = $role->id; ?>
     <h1><i class='fa fa-key'></i> Edit Role: {{$role->name}}</h1>
@@ -95,7 +95,7 @@
     {{ Form::close() }}    
 </div>                     
 
-                    <div class="form-group error">
+                    <!-- <div class="form-group error">
                         <label for="inputRole" class="col-sm-3 control-label">Role Name</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control has-error" id="role" name="name" placeholder="{{$role->name}}" value="">
@@ -114,7 +114,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="btn-save" value="add">Save changes</button>
                 <input type="hidden" id="task_id" name="task_id" value="0">
-            </div>
+            </div> -->
         </div>
     </div>
 </div>
