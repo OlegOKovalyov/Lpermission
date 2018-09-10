@@ -439,8 +439,6 @@ desired effect
 <script type="text/javascript">
   // ajax Form Add User--}}
   $(document).on('click','.create-modal', function() {
-    $(this).find('[autofocus]').focus();
-    $('#name').focus()
     $('#create').modal('show');
     $('.form-horizontal').show();
     $('.modal-title').text('Add User');
@@ -463,41 +461,18 @@ desired effect
         } else {
           $('.error').remove();
           $('#table').append("<tr class='user" + data.id + "'>"+
-          //"<td>" + data.id + "</td>"+
+          "<td>" + data.id + "</td>"+
           "<td>" + data.name + "</td>"+
           "<td>" + data.email + "</td>"+
           "<td>" + data.created_at + "</td>"+
-          "<td>" + 'User Role: TODO ' + "</td>"+
-
           "<td><button class='show-modal btn btn-info btn-sm' data-id='" + data.id + "' data-title='" + data.name + "' data-body='" + data.email + "'><span class='fa fa-eye'></span></button> <button class='edit-modal btn btn-warning btn-sm' data-id='" + data.id + "' data-title='" + data.name+ "' data-body='" + data.email + "'><span class='glyphicon glyphicon-pencil'></span></button> <button class='delete-modal btn btn-danger btn-sm' data-id='" + data.id + "' data-title='" + data.name + "' data-body='" + data.email + "'><span class='glyphicon glyphicon-trash'></span></button></td>"+
-
-
-
-          "<td><button class='btn btn-info pull-left' data-id='" + data.id + "' data-title='" + data.name + "' data-body='" + data.email + "' > Edit '" +  "'</button> <button class='edit-modal btn btn-warning btn-sm' data-id='" + data.id + "' data-title='" + data.name+ "' data-body='" + data.email + "'><span class='glyphicon glyphicon-pencil'></span></button> <button class='delete-modal btn btn-danger btn-sm' data-id='" + data.id + "' data-title='" + data.name + "' data-body='" + data.email + "'><span class='glyphicon glyphicon-trash'></span></button></td>"+
-
-
-        // <td>user1</td>
-        // <td>user1@ukr.net</td>
-        // <td>September 07, 2018 03:30pm</td>
-        // <td>User</td>
-        // <td>
-        // <a href="http://127.0.0.1:8000/users/10/edit" data-id="10" class="btn btn-info pull-left" data-toggle="modal" data-target="#userEditModal" style="margin-right: 3px;">Edit</a>
-
-        // <form method="POST" action="http://127.0.0.1:8000/users/10" accept-charset="UTF-8" class="form-inline form-delete"><input name="_method" type="hidden" value="DELETE"><input name="_token" type="hidden" value="9cd8Ca5hyLiv9FqHZTUofF2I7Vvnmw7b5oxjCHEY">
-        // <input class="btn btn-danger delete" name="delete_modal" type="submit" value="Delete">
-        // </form>
-
-
           "</tr>");
-          $('#create').modal('hide');
         }
       },
-    });
+    });console.log('data');
     $('#name').val('');
     $('#email').val('');
     $('#password').val('');
-    $('input[name=password_confirmation]').val('');
-    
   });
 </script>
 

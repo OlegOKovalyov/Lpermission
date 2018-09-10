@@ -9,7 +9,7 @@
     <a href="{{ route('permissions.index') }}" class="btn btn-default pull-right">Permissions</a></h1>
     <hr>
     <div class="table-responsive">
-        <table class="table table-bordered table-striped" data-toggle="dataTable" data-form="deleteForm">
+        <table id="table" class="table table-bordered table-striped" data-toggle="dataTable" data-form="deleteForm">
 
             <thead>
                 <tr>
@@ -20,10 +20,10 @@
                     <th>Operations</th>
                 </tr>
             </thead>
-
+{{ csrf_field() }}
             <tbody>
                 @foreach ($users as $user)
-                <tr>
+                <tr class="user{{ $user->id }}">
 
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
@@ -46,6 +46,10 @@
 
     <!-- <a href="{{ route('users.create') }}" class="btn btn-success">Add User</a> -->
     <a href="{{ route('users.create')}}" class="btn btn-success" data-toggle="modal" data-target="#userModal">Add User</a>
+
+    <!-- <button id="btn-add" name="btn-add" class="btn btn-primary">Add New User</button> -->
+    <a href="#" class="create-modal btn btn-success btn-sm">
+            <i class="glyphicon glyphicon-plus"></i></a>
 
     <!-- Modal -->
     <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel">
@@ -80,7 +84,62 @@
                 </div>
             </div>
         </div>
-    </div>          
+    </div>
+
+{{-- Modal Form Create User --}}
+<div id="create" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"></h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" role="form">
+          <div class="form-group row add">
+            <label class="control-label col-sm-2" for="title">Name :</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="name" name="name"
+              placeholder="" required autofocus>
+              <p class="error text-center alert alert-danger hidden"></p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="email">Email :</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="email" name="email"
+              placeholder="" required>
+              <p class="error text-center alert alert-danger hidden"></p>
+            </div>
+          </div>
+
+          <div class="form-group">
+              {{ Form::label('password', 'Password :', array('class' => 'control-label col-sm-2')) }}
+              <div class="col-sm-10">
+                  {{ Form::password('password', array('class' => 'form-control')) }}
+              </div>
+          </div>
+
+          <div class="form-group">
+              {{ Form::label('password', 'Confirm Password :', array('class' => 'control-label col-sm-2')) }}
+              <div class="col-sm-10">        
+                  {{ Form::password('password_confirmation', array('class' => 'form-control')) }}
+              </div>
+          </div>
+
+        </form>
+      </div>
+          <div class="modal-footer">
+            <button class="btn btn-warning" type="submit" id="add">
+              <span class="glyphicon glyphicon-plus"></span>Save User
+            </button>
+            <button class="btn btn-warning" type="button" data-dismiss="modal">
+              <span class="glyphicon glyphicon-remove"></span>Close
+            </button>
+          </div>
+    </div>
+  </div>
+</div></div>            
 
 </div>
 

@@ -143,4 +143,48 @@ class UserController extends Controller {
             ->with('flash_message',
              'User successfully deleted.');
     }
+
+
+    // public function addUser(Request $request){
+    //     //   $rules = array(
+    //     //     'name' => 'required',
+    //     //     'email' => 'required',
+    //     //   );
+    //     // $validator = Validator::make ( Input::all(), $rules);
+    //     // if ($validator->fails())
+    //     // return Response::json(array('errors'=> $validator->getMessageBag()->toarray()));
+
+    //     // else {
+    //     //   $user = new Post;
+    //     //   $user->name = $request->name;
+    //     //   $user->email = $request->email;
+    //     //   $user->save();
+    //     //   return response()->json($user);
+    //     // }
+
+    //     $user = User::create($request->only('email', 'name')); //Retrieving only the
+    //     return response()->json($user);
+    // }
+
+    public function addUser(Request $request){
+        // $rules = array(
+        // 'name' => 'required',
+        // 'email' => 'required',
+        // );
+        // $validator = Validator::make ( Input::all(), $rules);
+        // if ($validator->fails())
+        // return Response::json(array('errors'=> $validator->getMessageBag()->toarray()));
+
+        // else {
+          //$user = new User;
+          $user = User::create($request->only('email', 'name', 'password'));
+          $user->name = $request->name;
+          $user->email = $request->email;
+          $user->password = $request->password;
+          $user->save();
+          return response()->json($user);
+        // }
+    }
+
+
 }

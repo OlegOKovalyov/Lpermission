@@ -43,3 +43,10 @@ Route::resource('posts', 'PostController');
 
 
 //  });
+
+Route::group(['middleware' => ['web']], function() {
+  Route::resource('users','UserController');
+  Route::POST('/users/addUser','UserController@addUser');
+  Route::POST('editUser','UserController@editUsert');
+  Route::POST('deleteUser','PostController@deleteUser');
+});
