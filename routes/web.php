@@ -27,6 +27,15 @@ Route::get('/', 'HomeController@index')->name('home');
 
 Route::resource('users', 'UserController');
 
+
+Route::group(['middleware' => ['web']], function() {
+  Route::resource('users','UserController');
+  Route::post('/users/addUser', 'UserController@addUser');
+  // Route::post ( '/update', 'UserController@update' );
+  // Route::post ( '/add', 'UserController@store' );
+  // Route::post ( '/delete', 'UserController@destroy' );
+});
+
 Route::resource('roles', 'RoleController');
 
 Route::resource('permissions', 'PermissionController');

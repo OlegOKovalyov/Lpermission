@@ -7,9 +7,44 @@ p.teaser {
     .roles,
     .available-permissions {
         margin-left: 1rem;
+        padding-top: 1px;
     }
 }
 
 .post {
 	margin: 0 1rem;
+}
+
+.modal-window {
+	padding: 1rem 3rem;
+}
+
+.modal-header {
+	padding: 5px;
+}
+
+.modal-header h1 {
+	margin: 0;
+	padding: 5px;
+}
+
+.form-group {
+	margin-bottom: 5px;
+}
+
+.with-buttons {
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
+	display: flex;
+}
+
+.with-buttons .edit-modal {
+	display: inline-block;
+	margin-right: .5rem;
+}
+
+.main-footer {
+	margin-left: 0;
 }

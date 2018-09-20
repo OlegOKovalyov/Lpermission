@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 
 use App\User;
 use Auth;
+use Validator;
+//use Response;
+use Illuminate\Support\Facades\Input;
+//use App\Http\Request;
 
 //Importing laravel-permission models
 use Spatie\Permission\Models\Role;
@@ -28,7 +32,9 @@ class UserController extends Controller {
     public function index() {
     //Get all users and pass it to the view
         $users = User::all(); 
-        return view('users.index', ['users' => User::paginate(5)])->with('users', $users);
+        $roles = Role::all();
+
+        return view('users.index', ['users' => User::paginate(5), 'roles' => $roles])->with('users', $users);
     }
 
     /**
@@ -48,30 +54,30 @@ class UserController extends Controller {
     * @param  \Illuminate\Http\Request  $request
     * @return \Illuminate\Http\Response
     */
-    public function store(Request $request) {
-    //Validate name, email and password fields
-        $this->validate($request, [
-            'name'=>'required|max:120',
-            'email'=>'required|email|unique:users',
-            'password'=>'required|min:6|confirmed'
-        ]);
+    // public function store(Request $request) {
+    // //Validate name, email and password fields
+    //     $this->validate($request, [
+    //         'name'=>'required|max:120',
+    //         'email'=>'required|email|unique:users',
+    //         'password'=>'required|min:6|confirmed'
+    //     ]);
 
-        $user = User::create($request->only('email', 'name', 'password')); //Retrieving only the email and password data
+    //     $user = User::create($request->only('email', 'name', 'password')); //Retrieving only the email and password data
 
-        $roles = $request['roles']; //Retrieving the roles field
-    //Checking if a role was selected
-        if (isset($roles)) {
+    //     $roles = $request['roles']; //Retrieving the roles field
+    // //Checking if a role was selected
+    //     if (isset($roles)) {
 
-            foreach ($roles as $role) {
-            $role_r = Role::where('id', '=', $role)->firstOrFail();            
-            $user->assignRole($role_r); //Assigning role to user
-            }
-        }        
-    //Redirect to the users.index view and display message
-        return redirect()->route('users.index')
-            ->with('flash_message',
-             'User successfully added.');
-    }
+    //         foreach ($roles as $role) {
+    //         $role_r = Role::where('id', '=', $role)->firstOrFail();            
+    //         $user->assignRole($role_r); //Assigning role to user
+    //         }
+    //     }        
+    // //Redirect to the users.index view and display message
+    //     return redirect()->route('users.index')
+    //         ->with('flash_message',
+    //          'User successfully added.');
+    // }
 
     /**
     * Display the specified resource.
@@ -143,4 +149,65 @@ class UserController extends Controller {
             ->with('flash_message',
              'User successfully deleted.');
     }
+
+
+    // public function addUser(Request $request){
+
+    //     $rules = array(
+    //     'name' => 'required',
+    //     'email' => 'required',
+    //     );
+
+    //     $validator = Validator::make(Input::all(), $rules);
+
+    //     if ($validator->fails())
+    //         return Response::json(array('errors'=> $validator->getMessageBag()->toarray()));
+
+    //     else {
+
+    //         //$user = new User;
+    //         $user = User::create($request->only('email', 'name', 'password'));
+    //         $user->name = $request->name;
+    //         $user->email = $request->email;
+    //         $user->save();
+    //         return response()->json($user);
+    //     }
+    // }
+
+
+    public function addUser(Request $request) {
+    //Validate name, email and password fields
+        $this->validate($request, [
+            'name'=>'required|max:120',
+            'email'=>'required|email|unique:users',
+            //'password'=>'required|min:6|confirmed'
+        ]);
+
+        $user = User::create($request->only('email', 'name', 'password')); //Retrieving only the email and password data
+        //$user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = $request->password;
+
+
+        $roles = $request['roles']; //Retrieving the roles field
+    //Checking if a role was selected
+        if (isset($roles)) {
+
+            foreach ($roles as $role) {
+            $role_r = Role::where('id', '=', $role)->firstOrFail();            
+            $user->assignRole($role_r); //Assigning role to user
+            }
+        }
+echo $role_r;
+        $user->save();
+        return response()->json($user);
+
+    //Redirect to the users.index view and display message
+        // return redirect()->route('users.index')
+        //     ->with('flash_message',
+        //      'User successfully added.');
+    }    
+
+
 }

@@ -1,5 +1,12 @@
+{{-- \resources\views\users\create.blade.php --}}
+{{-- \resources\views\users\create.blade.php --}}
+@extends('layouts.app')
 
-<div class='modal-window'>
+@section('title', '| Add User')
+
+@section('content')
+
+<div class='col-lg-4 col-lg-offset-4'>
 
     <h1><i class='fa fa-user-plus'></i> Add User</h1>
     <hr>
@@ -41,3 +48,5 @@
     {{ Form::close() }}
 
 </div>
+
+@endsection
