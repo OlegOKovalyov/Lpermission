@@ -462,11 +462,19 @@ desired effect
         } else {
           //console.log(data);
           $('.error').remove();
-          $('#table').append("<tr class='post" + data.id + "'>"+
-          "<td>" + data.id + "</td>"+
+          $('#table').append("<tr class='user-" + data.id + "'>"+
+          //"<td>" + data.id + "</td>"+
           "<td>" + data.name + "</td>"+
           "<td>" + data.email + "</td>"+
           "<td>" + data.created_at + "</td>"+
+          "<td>" + 'User Role: TODO ' + "</td>"+
+
+
+          // $('#table').append("<tr class='post" + data.id + "'>"+
+          // "<td>" + data.id + "</td>"+
+          // "<td>" + data.name + "</td>"+
+          // "<td>" + data.email + "</td>"+
+          // "<td>" + data.created_at + "</td>"+
           "<td><button class='show-modal btn btn-info btn-sm' data-id='" + data.id + "' data-title='" + data.name + "' data-body='" + data.email + "'><span class='fa fa-eye'></span></button> <button class='edit-modal btn btn-warning btn-sm' data-id='" + data.id + "' data-title='" + data.name + "' data-body='" + data.email + "'><span class='glyphicon glyphicon-pencil'></span></button> <button class='delete-modal btn btn-danger btn-sm' data-id='" + data.id + "' data-title='" + data.name + "' data-body='" + data.email + "'><span class='glyphicon glyphicon-trash'></span></button></td>"+
           "</tr>");
         }
