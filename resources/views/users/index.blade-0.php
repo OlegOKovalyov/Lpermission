@@ -86,12 +86,10 @@
                     </div>
 
                     <div class='form-group'>
-                        <div id="roles_checkboxes" class="col-sm-10 col-sm-offset-2">
-                          <?php $i=0; ?>
+                        <div class="col-sm-10 col-sm-offset-2">
                         @foreach ($roles as $role)
                             {{ Form::checkbox('roles[]',  $role->id ) }}
-                            {{ Form::label($role->name, ucfirst($role->name), array('id'=>'roles_chbxs' . $i,'class'=>'')) }}<br>
-                            <?php $i++; ?>
+                            {{ Form::label($role->name, ucfirst($role->name)) }}<br>
                         @endforeach
                         </div>        
                     </div>                    
@@ -132,5 +130,81 @@
     </div>
   </div>
 </div> 
+
+<!-- Modal -->
+<!-- <div class="modal fade" id="userEditModal" tabindex="-1" role="dialog" aria-labelledby="userEditModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+    </div>
+  </div>
+</div>  -->
+
+  <!-- Modal window -->
+  <div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"></h4>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal" role="form">
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="id">ID :</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="fid" disabled>
+              </div>
+              </div>
+              <div class="form-group">
+              <label class="control-label col-sm-2" for="title">Name:</label>
+              <div class="col-sm-10">
+                <input type="name" class="form-control" id="t">
+              </div>
+            </div>
+            <div class="form-group">
+            <label class="control-label col-sm-2" for="description">Email:</label>
+            <div class="col-sm-10">
+              <input type="name" class="form-control" id="d">
+            </div>
+          </div>
+        <h5><b>Give Role</b></h5>
+        <div class='form-group'>
+            @foreach ($roles as $role)
+                {{ Form::checkbox('roles[]',  $role->id, $user->roles, array('id' => 'rid-'.$role->id)) }}
+                {{ Form::label($role->name, ucfirst($role->name)) }}<br>
+
+            @endforeach
+        </div>
+            <div class="form-group">
+            <label class="control-label col-sm-2" for="description">Password:</label>
+            <div class="col-sm-10">
+              <input type="password" class="form-control" id="password">
+            </div>
+          </div>
+
+            <div class="form-group">
+            <label class="control-label col-sm-2" for="description">Confirm Password:</label>
+            <div class="col-sm-10">
+              <input type="password" class="form-control" id="password_confirmation">
+            </div>
+          </div>          
+
+          </form>
+            <div class="deleteContent">
+            Are you Sure you want to delete <span class="title"></span> ?
+            <span class="hidden id"></span>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn actionBtn" data-dismiss="modal">
+              <span id="footer_action_button" class='glyphicon'> </span>
+            </button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              <span class='glyphicon glyphicon-remove'></span> Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 @endsection
