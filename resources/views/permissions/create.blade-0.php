@@ -1,5 +1,11 @@
+{{-- \resources\views\permissions\create.blade.php --}}
+@extends('layouts.app')
 
-<div class='modal-window'>
+@section('title', '| Create Permission')
+
+@section('content')
+
+<div class='col-lg-4 col-lg-offset-4'>
 
     <h1><i class='fa fa-key'></i> Add Permission</h1>
     <br>
@@ -25,3 +31,5 @@
     {{ Form::close() }}
 
 </div>
+
+@endsection

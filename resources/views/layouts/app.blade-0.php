@@ -7,7 +7,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<<<<<<< HEAD
   <meta name="_token" content="{!! csrf_token() !!}" />
+=======
+>>>>>>> a76270f864d7a4217f1b23ad9e1b51d6c8d6be29
   <title>AdminLTE 2 | Starter</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -279,7 +282,14 @@ desired effect
           </a>
           <ul class="treeview-menu">
             <li><a href="{{ route('users.create')}}">Create User</a></li>
+<<<<<<< HEAD
             <li><a href="{{ route('users.index')}}">User List</a></li>
+=======
+            <li><a href="{{ route('users.create')}}" data-toggle="modal" data-target="#myModal">Create User</a></li>
+            <li><a href="{{ route('users.index')}}">User List</a></li>
+            <!-- <li><a href="{{ route('users.index')}}" data-toggle="modal" data-target="#myModal">User List</a></li> -->
+
+>>>>>>> a76270f864d7a4217f1b23ad9e1b51d6c8d6be29
           </ul>
         </li>
 
@@ -398,11 +408,37 @@ desired effect
   <!-- Add the sidebar's background. This div must be placed
   immediately after the control sidebar -->
   <div class="control-sidebar-bg"></div>
+<<<<<<< HEAD
 </div>
 <!-- ./wrapper -->
 
 <!-- <meta name="_token" content="{!! csrf_token() !!}" /> -->
 
+=======
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+<!--       <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div> -->
+    </div>
+  </div>
+</div> 
+
+</div>
+<!-- ./wrapper -->
+
+>>>>>>> a76270f864d7a4217f1b23ad9e1b51d6c8d6be29
 <!-- REQUIRED JS SCRIPTS -->
 
 <!-- jQuery 3 -->
@@ -412,6 +448,7 @@ desired effect
 <!-- AdminLTE App -->
 <script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
 
+<<<<<<< HEAD
   {{-- Ajax Form Add--}}
 <script type="text/javascript">
 
@@ -593,6 +630,8 @@ $('.modal-footer').on('click', '.delete', function() {
 
 </script>
 
+=======
+>>>>>>> a76270f864d7a4217f1b23ad9e1b51d6c8d6be29
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. -->

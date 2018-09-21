@@ -16,6 +16,7 @@ p.teaser {
 }
 
 .modal-window {
+<<<<<<< HEAD
 	padding: 1rem 3rem;
 }
 
@@ -47,4 +48,7 @@ p.teaser {
 
 .main-footer {
 	margin-left: 0;
+=======
+	padding: 3rem;
+>>>>>>> a76270f864d7a4217f1b23ad9e1b51d6c8d6be29
 }

@@ -278,8 +278,11 @@ desired effect
               </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="{{ route('users.create')}}">Create User</a></li>
+            <!-- <li><a href="{{ route('users.create')}}">Create User</a></li> -->
+            <li><a href="{{ route('users.create')}}" data-toggle="modal" data-target="#myModal">Create User</a></li>
             <li><a href="{{ route('users.index')}}">User List</a></li>
+            <!-- <li><a href="{{ route('users.index')}}" data-toggle="modal" data-target="#myModal">User List</a></li> -->
+
           </ul>
         </li>
 
@@ -398,6 +401,15 @@ desired effect
   <!-- Add the sidebar's background. This div must be placed
   immediately after the control sidebar -->
   <div class="control-sidebar-bg"></div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+    </div>
+  </div>
+</div> 
+
 </div>
 <!-- ./wrapper -->
 
@@ -407,12 +419,27 @@ desired effect
 
 <!-- jQuery 3 -->
 <script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
+
+<script>
+$(document).ready(function(){
+    $('table[data-form="deleteForm"]').on('click', '.form-delete', function(e){
+        e.preventDefault();
+        var $form=$(this);
+        $('#confirm').modal({ backdrop: 'static', keyboard: false })
+            .on('click', '#delete-btn', function(){
+                $form.submit();
+            });
+    }); 
+});    
+</script> 
+
 <!-- Bootstrap 3.3.7 -->
 <script src="{{ asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 
 <!-- AdminLTE App -->
 <script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
 
+<<<<<<< HEAD
   {{-- Ajax Form Add--}}
 <script type="text/javascript">
 
@@ -624,6 +651,9 @@ desired effect
 // });
 
 </script>
+=======
+            <!-- <script src="{{asset('js/ajax-crud.js')}}"></script> -->
+>>>>>>> a76270f864d7a4217f1b23ad9e1b51d6c8d6be29
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the

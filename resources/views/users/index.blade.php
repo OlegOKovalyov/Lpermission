@@ -50,6 +50,7 @@
     </div>
 
     <!-- <a href="{{ route('users.create') }}" class="btn btn-success">Add User</a> -->
+<<<<<<< HEAD
     <a href="{{ URL::to('users/create') }}" class="btn btn-success " data-toggle="modal" data-target="#userModal">Add User</a>
     <!-- <button class="btn btn-warning" type="submit" id="add">
         <span class="glyphicon glyphicon-plus"></span> Add Users
@@ -95,6 +96,17 @@
                         @endforeach
                         </div>        
                     </div>                    
+=======
+    <a href="{{ route('users.create')}}" class="btn btn-success" data-toggle="modal" data-target="#userModal">Add User</a>
+
+    <!-- Modal -->
+    <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        </div>
+      </div>
+    </div> 
+>>>>>>> a76270f864d7a4217f1b23ad9e1b51d6c8d6be29
 
                     <div class="form-group">
                       {{ Form::label('password', 'Password :', array('class' => 'control-label col-sm-2')) }}
