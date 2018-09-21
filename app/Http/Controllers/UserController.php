@@ -183,12 +183,17 @@ class UserController extends Controller {
             //'password'=>'required|min:6|confirmed'
         ]);
 
-        $user = User::create($request->only('email', 'name', 'password')); //Retrieving only the email and password data
-        //$user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = $request->password;
+        // $validator = Validator::make ( Input::all(), $rules);
+        // if ($validator->fails())
+        // return Response::json(array('errors'=> $validator->getMessageBag()->toarray()));
 
+        // else {
+            $user = User::create($request->only('name', 'email', 'password')); //Retrieving only the email and password data
+            //$user = new User();
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = $request->password;
+        // }
 
         $roles = $request['roles']; //Retrieving the roles field
     //Checking if a role was selected
@@ -199,7 +204,7 @@ class UserController extends Controller {
             $user->assignRole($role_r); //Assigning role to user
             }
         }
-echo $role_r;
+
         $user->save();
         return response()->json($user);
 

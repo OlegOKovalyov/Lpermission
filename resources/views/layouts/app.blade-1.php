@@ -415,113 +415,102 @@ desired effect
 
   {{-- Ajax Form Add--}}
 <script type="text/javascript">
+$(document).ready(function() {
 
-  function returnCheckboxSelect() {
-    var chkbox = document.getElementsByName('roles[]');
-    var vals = "";
-    for (var i=0, n=chkbox.length;i<n;i++) {
-        if (chkbox[i].checked) 
-        {
-          console.log('i=' + i)
-            var label = "#roles_chbxs" + i;
-            vals += " " + $(label).text();
+  $(document).on('click', '.create-modal', function(){
+    $('#create').modal('show');
+    $('.form-horizontal').show();
+    $('.modal-title').text('Add User');
+  });  
+
+  /* Create new Item */
+  // var form_horizontal = $(".form_horizontal");
+  $("#add-modal").click(function(e){
+      $.ajaxSetup({
+        headers: {
+          // 'X-CSRF-TOKEN': $('meta[name="_token]').attr('content')
+          'X-CSRF-TOKEN': $('input[name=_token]').val()
         }
-    }
-    return(vals); 
-  }
+      })    
+      e.preventDefault();
 
-  $(document).ready(function() {
+      // name=user6&email=user6%40ukr.net&roles%5B%5D=2&password=123456&password_confirmation=123456&roles%5B%5D=1&roles%5B%5D=2
+      // var utoken = $('input[name=_token]').val();
+      // var $data = $(this).parent('.form-horizontal').serialize();
+      // var name = $('input[name=name]').val();
+      // var email = $('input[name=email]').val();
+      // var password = $('input[name=password]').val();
+      // var roles = $('input[name=checkbox]').val();
+      // var title = $("#create-item").find("input[name='title']").val();
+      // var description = $("#create-item").find("textarea[name='description']").val();
 
-    /* Create new user modal form */
-    $(document).on('click', '.create-modal', function(){
-      $('#create').modal('show');
-      $('.form-horizontal').show();
-      $('.modal-title').text('Add New User');
-    });  
+      $.ajax({
+          // dataType: 'json',
+          type:'POST',
+          url: '/users/addUser',
+          // data:{_token:utoken, name:name, email:email, password:password, roles:roles}
+          // data: utoken + '&' + $data,
+          data: $('.form-horizontal').serialize(),
+          // data: {
+          //   // '_token': $('input[name=_token]').val(), // lLF61jojtLJjxvIeSqL5MUwwDn6PxnkPifbBn9sF
+          //   'name': $('input[name=name]').val(),
+          //   'email': $('input[name=email]').val(),
+          //   'password': $('input[name=password]').val(),
+          //   'roles': $('input[type=checkbox]').val(),
+          // },
+          success: function(data) {
+        $('#form_result').html(data);
+      }
+      })
+      // .done(function(responce){
+      //     alert(responce);
+      //     // getPageData();
+      //     // $("#create").modal('hide');
+      //     // alert('Item Created Successfully.');
+      // });
+      $('#create').modal('hide');
+      // alert($('input[type=checkbox]').val());
+      alert('Item Created Successfully.');
+  });
 
-    $("#add-modal").click(function(e){
-        $.ajaxSetup({
-          headers: {
-            'X-CSRF-TOKEN': $('input[name=_token]').val()
-          }
-        })    
-        e.preventDefault();
-        $.ajax({
-            dataType: 'json',
-            type:'POST',
-            url: '/users/addUser',
-            data: $('.form-horizontal').serialize(),
-            success: function(data) {
-              if ((data.errors)) {
-                $('.error').removeClass('hidden');
-                $('.error').text(data.errors.name);
-                $('.error').text(data.errors.email);
-                $('#create').modal('hide');
-                alert("Bad submit");
-              } else {
-                $('.error').remove(); 
-                $('#table').append("<tr class='user_" + data.id + "'>"+
-                //"<td>" + data.id + "</td>"+
-                "<td>" + data.name + "</td>"+
-                "<td>" + data.email + "</td>"+
-                "<td>" + data.created_at + "</td>"+
-                "<td>" + returnCheckboxSelect() + "</td>"+
-                "<td>" + data.role_id + "</td>"+ "</tr>");
-                $('#create').modal('hide');
-                alert('New User has been Created Successfully');
-                $('.form-horizontal').trigger('reset');
-              }
-            }
-        })
-        // .done(function(responce){
-        //     alert(responce);
-        //     // getPageData();
-        //     // $("#create").modal('hide');
-        //     // alert('Item Created Successfully.');
-        // });
-        
-        // alert($('input[type=checkbox]').val());
-
-    });
-
-    // Function Add(Save)
-    // $("#add-modal").click(function() {
-    // $.ajax({
-    //   type: 'POST',
-    //   url: '/users/addUser',
-    //   data: {
-    //     '_token': $('input[name=_token]').val(),
-    //     'name': $('input[name=name]').val(),
-    //     'email': $('input[name=email]').val(),
-    //     'password': $('input[name=password]').val(),
-    //     'roles': $('input[type=checkbox]').val(),
-    //   },
-    //   success: function(data){
-    //     if ((data.errors)) {
-    //       $('.error').removeClass('hidden');
-    //       $('.error').text(data.errors.name);
-    //       $('.error').text(data.errors.email);
-    //     } else {
-    //       alert('test no-error');
-    //       $('.error').remove(); 
-    //       $('#table').append("<tr class='user_" + data.id + "'>"+
-    //       //"<td>" + data.id + "</td>"+
-    //       "<td>" + data.name + "</td>"+
-    //       "<td>" + data.email + "</td>"+
-    //       "<td>" + data.created_at + "</td>"+
-    //       "<td>" + 'User Role: TODO ' + "</td>"+
-    //       "<td><button class='show-modal btn btn-info btn-sm' data-id='" + data.id + "' data-title='" + data.name + "' data-body='" + data.email + "'><span class='fa fa-eye'></span></button> <button class='edit-modal btn btn-warning btn-sm' data-id='" + data.id + "' data-title='" + data.name + "' data-body='" + data.email + "'><span class='glyphicon glyphicon-pencil'></span></button> <button class='delete-modal btn btn-danger btn-sm' data-id='" + data.id + "' data-title='" + data.name + "' data-body='" + data.email + "'><span class='glyphicon glyphicon-trash'></span></button></td>"+
-    //       "</tr>");
-    //     }
-    //   },
-    // });
-    // $('#create').modal('hide');
-    // $('#create').modal('hide'); 
-    // alert("New user was added in database!");   
-    // $('#name').val();
-    // $('#email').val();
+  // Function Add(Save)
+  // $("#add-modal").click(function() {
+  // $.ajax({
+  //   type: 'POST',
+  //   url: '/users/addUser',
+  //   data: {
+  //     '_token': $('input[name=_token]').val(),
+  //     'name': $('input[name=name]').val(),
+  //     'email': $('input[name=email]').val(),
+  //     'password': $('input[name=password]').val(),
+  //     'roles': $('input[type=checkbox]').val(),
+  //   },
+  //   success: function(data){
+  //     if ((data.errors)) {
+  //       $('.error').removeClass('hidden');
+  //       $('.error').text(data.errors.name);
+  //       $('.error').text(data.errors.email);
+  //     } else {
+  //       alert('test no-error');
+  //       $('.error').remove(); 
+  //       $('#table').append("<tr class='user_" + data.id + "'>"+
+  //       //"<td>" + data.id + "</td>"+
+  //       "<td>" + data.name + "</td>"+
+  //       "<td>" + data.email + "</td>"+
+  //       "<td>" + data.created_at + "</td>"+
+  //       "<td>" + 'User Role: TODO ' + "</td>"+
+  //       "<td><button class='show-modal btn btn-info btn-sm' data-id='" + data.id + "' data-title='" + data.name + "' data-body='" + data.email + "'><span class='fa fa-eye'></span></button> <button class='edit-modal btn btn-warning btn-sm' data-id='" + data.id + "' data-title='" + data.name + "' data-body='" + data.email + "'><span class='glyphicon glyphicon-pencil'></span></button> <button class='delete-modal btn btn-danger btn-sm' data-id='" + data.id + "' data-title='" + data.name + "' data-body='" + data.email + "'><span class='glyphicon glyphicon-trash'></span></button></td>"+
+  //       "</tr>");
+  //     }
+  //   },
   // });
-  }); // ОКОНЧАНИЕ ready()
+  // $('#create').modal('hide');
+  // $('#create').modal('hide'); 
+  // alert("New user was added in database!");   
+  // $('#name').val();
+  // $('#email').val();
+// });
+}); // ОКОНЧАНИЕ ready()
 </script>
 
 
