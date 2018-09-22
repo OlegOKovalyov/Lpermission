@@ -419,8 +419,117 @@ desired effect
 
 <!-- jQuery 3 -->
 <script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> -->
 
+<!-- Bootstrap 3.3.7 -->
+<!-- <script src="{{ asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script> -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+<!-- AdminLTE App -->
+<script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
+
+<script src="{{ asset('js/sm-validator.js') }}"></script>
+
+<script type="text/javascript"> 
+    (function ($) {
+        var rules = {
+            name: {
+                notEmpty: {
+                    message: "The title is required"
+                },              
+                stringLength: {
+                    min: 3,
+                    max: 120,
+                    message: "The name length must be within 3 to 120."
+                }
+            },
+            title: {
+                notEmpty: {
+                    message: "The title is required"
+                },
+                stringLength: {
+                    min: 60,
+                    max: 160,
+                    message: "The title length must be within 60 to 160."
+                }
+            },
+            email: {
+                notEmpty: {
+                    message: "The email field is required"
+                },
+                email: {
+                    message: "The email must be valid!",
+                }
+            },
+            password: {
+                notEmpty: {
+                    message: "The password field is required"
+                },
+
+            },
+            password_confirmation: {
+                match: {
+                    message: "The password and confirm password must be match!",
+                    field: 'password'
+                }              
+            },
+            mobile: {
+                notEmpty: {
+                    message: "The Mobile no field is required"
+                },
+                mobile: {
+                    message: "The Mobile no must be valid!",
+                }
+            },
+            count: {
+                count: {
+                    type: 'checkbox', //here 2 types available like class and checkbox
+                    min: 2,
+                    massageDivId: 'your Message section id',
+                    message: "The count field must be greter then 2!",
+                }
+            },
+            remoteCheck: {
+                remote: {
+                    url: 'Your url will be here',
+                    type: 'get', //your ajax form method and success return must be 1 for true validation
+                    message: "The count field must be greter then 2!",
+                }
+            },
+            type: {
+                notEmpty: {
+                    message: "The package type is required"
+                },
+                itsDependable: {
+                    rules: {
+                        1: {
+                            'pricing_detail_1[price_type]': {
+                                'notEmpty': {
+                                    message: "The package price type is required"
+                                }
+                            },
+                        },
+                        2: {
+                            'pricing_detail_2[basic_pricing_title]': {
+                                'notEmpty': {
+                                    message: "The package basic price title is required"
+                                }
+                            },
+                        }
+                    }
+
+                }
+            }
+
+        };
+
+        smValidator("create", rules, 1);
+    })(jQuery);
+</script>
+
+<!-- <script src="{{ asset('js/ajax-modals.js') }}" ></script> -->
 <script>
+/* {{-- Ajax Form Delete --}} */
 $(document).ready(function(){
     $('table[data-form="deleteForm"]').on('click', '.form-delete', function(e){
         e.preventDefault();
@@ -431,17 +540,11 @@ $(document).ready(function(){
             });
     }); 
 });    
-</script> 
 
-<!-- Bootstrap 3.3.7 -->
-<script src="{{ asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 
-<!-- AdminLTE App -->
-<script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
 
-<<<<<<< HEAD
-  {{-- Ajax Form Add--}}
-<script type="text/javascript">
+/* {{-- Ajax Form Add User --}} */
+$(document).ready(function() {
 
   function returnCheckboxSelect() {
     var chkbox = document.getElementsByName('roles[]');
@@ -449,114 +552,125 @@ $(document).ready(function(){
     for (var i=0, n=chkbox.length;i<n;i++) {
         if (chkbox[i].checked) 
         {
-          console.log('i=' + i)
-            var label = "#roles_chbxs" + i;
-            vals += " " + $(label).text();
+          var label = "#roles_chbxs" + i;
+          vals += " " + $(label).text();
         }
     }
     return(vals); 
   }
 
-  $(document).ready(function() {
+/* Create 'Add User' modal AJAX form */
+$(document).on('click', '.create-modal', function(){
+  $('#create').modal('show');
+  $('.form-horizontal').show();
+  $('.modal-title').html("<i class='fa fa-user-plus' style='margin-left:1rem;'></i>Add New User");
+});  
 
-    /* Create new user modal form */
-    $(document).on('click', '.create-modal', function(){
-      $('#create').modal('show');
-      $('.form-horizontal').show();
-      $('.modal-title').text('Add New User');
-    });  
+$("#add-modal").click(function(e){
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('input[name=_token]').val()
+      }
+    })    
+    e.preventDefault();
+    var data = $('.form-horizontal').serialize();
+    $.ajax({
+        dataType: 'json',
+        type:'POST',
+        url: "{{ url('/users/addUser') }}",
+        data: data,
+        success: function(data) {
+          if ((data.errors)) {
+            $('.error').removeClass('hidden');
+            $('.error').text(data.errors.name);
+            $('.error').text(data.errors.email);
+            $('#create').modal('hide');
+            alert("Bad submit");
+          } else {
+            $('.error').remove(); 
+            $('#table').append("<tr class='user_" + data.id + "'>"+
+              //"<td>" + data.id + "</td>"+
+              "<td>" + data.name + "</td>"+
+              "<td>" + data.email + "</td>"+
+              "<td>" + data.created_at + "</td>"+
+              "<td>" + returnCheckboxSelect() + "</td>"+
+              "<td class='with-buttons'>" +
+              
+                "<a  href='/users/" + data.id + "/edit' class='edit-modal btn btn-primary btn-xs edit' data-id='{{$user->id}}' data-name='luser' data-email='{{$user->email}}' data-toggle='modal' data-target='#userEditModal'>" +
+                    "<span class='glyphicon glyphicon-edit'></span>" + " Edit" +
+                "</a>" +
 
-    $("#add-modal").click(function(e){
-        $.ajaxSetup({
-          headers: {
-            'X-CSRF-TOKEN': $('input[name=_token]').val()
+                "<form method='POST' action='/users/{{$user->id}}' accept-charset='UTF-8'>" + "<input name='_method' type='hidden' value='DELETE'>" + "<input name='_token' type='hidden'>" +
+                  "<button onclick='return confirm(" + "Are you sure you want to delete {{ $user->name }}?" + ")' class='btn btn-danger btn-xs' name='delete' data-id='" + data.id + "' data-title='" + data.name + "' data-body='" + data.email + "'>" +
+                    "<i class='glyphicon glyphicon-remove'>" + "</i>" + "Delete" + 
+                  "</button>" + 
+                "</form>" +
+
+              "</td>" +
+            "</tr>");
+            $('#create').modal('hide');
+            alert('\"' +  data.name + '\" has been created successfully!');
+            $('.form-horizontal').trigger('reset');
           }
-        })    
-        e.preventDefault();
-        $.ajax({
-            dataType: 'json',
-            type:'POST',
-            url: '/users/addUser',
-            data: $('.form-horizontal').serialize(),
-            success: function(data) {
-              if ((data.errors)) {
-                $('.error').removeClass('hidden');
-                $('.error').text(data.errors.name);
-                $('.error').text(data.errors.email);
-                $('#create').modal('hide');
-                alert("Bad submit");
-              } else {
-                $('.error').remove(); 
-                $('#table').append("<tr class='user_" + data.id + "'>"+
-                //"<td>" + data.id + "</td>"+
-                "<td>" + data.name + "</td>"+
-                "<td>" + data.email + "</td>"+
-                "<td>" + data.created_at + "</td>"+
-                "<td>" + returnCheckboxSelect() + "</td>"+
-                "<td>" + data.role_id + "</td>"+ "</tr>");
-                $('#create').modal('hide');
-                alert('New User has been Created Successfully');
-                $('.form-horizontal').trigger('reset');
-              }
-            }
-        })
-        // .done(function(responce){
-        //     alert(responce);
-        //     // getPageData();
-        //     // $("#create").modal('hide');
-        //     // alert('Item Created Successfully.');
-        // });
-        
-        // alert($('input[type=checkbox]').val());
-
-    });
-
-    // Function Add(Save)
-    // $("#add-modal").click(function() {
-    // $.ajax({
-    //   type: 'POST',
-    //   url: '/users/addUser',
-    //   data: {
-    //     '_token': $('input[name=_token]').val(),
-    //     'name': $('input[name=name]').val(),
-    //     'email': $('input[name=email]').val(),
-    //     'password': $('input[name=password]').val(),
-    //     'roles': $('input[type=checkbox]').val(),
-    //   },
-    //   success: function(data){
-    //     if ((data.errors)) {
-    //       $('.error').removeClass('hidden');
-    //       $('.error').text(data.errors.name);
-    //       $('.error').text(data.errors.email);
-    //     } else {
-    //       alert('test no-error');
-    //       $('.error').remove(); 
-    //       $('#table').append("<tr class='user_" + data.id + "'>"+
-    //       //"<td>" + data.id + "</td>"+
-    //       "<td>" + data.name + "</td>"+
-    //       "<td>" + data.email + "</td>"+
-    //       "<td>" + data.created_at + "</td>"+
-    //       "<td>" + 'User Role: TODO ' + "</td>"+
-    //       "<td><button class='show-modal btn btn-info btn-sm' data-id='" + data.id + "' data-title='" + data.name + "' data-body='" + data.email + "'><span class='fa fa-eye'></span></button> <button class='edit-modal btn btn-warning btn-sm' data-id='" + data.id + "' data-title='" + data.name + "' data-body='" + data.email + "'><span class='glyphicon glyphicon-pencil'></span></button> <button class='delete-modal btn btn-danger btn-sm' data-id='" + data.id + "' data-title='" + data.name + "' data-body='" + data.email + "'><span class='glyphicon glyphicon-trash'></span></button></td>"+
-    //       "</tr>");
-    //     }
-    //   },
+        }
+    })
+    // .done(function(responce){
+    //     alert(responce);
+    //     // getPageData();
+    //     // $("#create").modal('hide');
+    //     // alert('Item Created Successfully.');
     // });
-    // $('#create').modal('hide');
-    // $('#create').modal('hide'); 
-    // alert("New user was added in database!");   
-    // $('#name').val();
-    // $('#email').val();
-  // });
-  }); // ОКОНЧАНИЕ ready()
-</script>
+    
+    // alert($('input[type=checkbox]').val());
+
+});
+
+// Function Add(Save)
+// $("#add-modal").click(function() {
+// $.ajax({
+//   type: 'POST',
+//   url: '/users/addUser',
+//   data: {
+//     '_token': $('input[name=_token]').val(),
+//     'name': $('input[name=name]').val(),
+//     'email': $('input[name=email]').val(),
+//     'password': $('input[name=password]').val(),
+//     'roles': $('input[type=checkbox]').val(),
+//   },
+//   success: function(data){
+//     if ((data.errors)) {
+//       $('.error').removeClass('hidden');
+//       $('.error').text(data.errors.name);
+//       $('.error').text(data.errors.email);
+//     } else {
+//       alert('test no-error');
+//       $('.error').remove(); 
+//       $('#table').append("<tr class='user_" + data.id + "'>"+
+//       //"<td>" + data.id + "</td>"+
+//       "<td>" + data.name + "</td>"+
+//       "<td>" + data.email + "</td>"+
+//       "<td>" + data.created_at + "</td>"+
+//       "<td>" + 'User Role: TODO ' + "</td>"+
+//       "<td><button class='show-modal btn btn-info btn-sm' data-id='" + data.id + "' data-title='" + data.name + "' data-body='" + data.email + "'><span class='fa fa-eye'></span></button> <button class='edit-modal btn btn-warning btn-sm' data-id='" + data.id + "' data-title='" + data.name + "' data-body='" + data.email + "'><span class='glyphicon glyphicon-pencil'></span></button> <button class='delete-modal btn btn-danger btn-sm' data-id='" + data.id + "' data-title='" + data.name + "' data-body='" + data.email + "'><span class='glyphicon glyphicon-trash'></span></button></td>"+
+//       "</tr>");
+//     }
+//   },
+// });
+// $('#create').modal('hide');
+// $('#create').modal('hide'); 
+// alert("New user was added in database!");   
+// $('#name').val();
+// $('#email').val();
+// });
+}); // ОКОНЧАНИЕ ready()
 
 
 
 
 
-<script type="text/javascript">
-    // Edit Data (Modal and function edit data)
+
+
+  // Edit Data (Modal and function edit data)
 //     $(document).on('click', '.edit-modal', function() {
 //     $('#footer_action_button').text(" Update JS");
 //     $('#footer_action_button').addClass('glyphicon-check');
@@ -649,11 +763,8 @@ $(document).ready(function(){
 //     }
 //   });
 // });
-
 </script>
-=======
-            <!-- <script src="{{asset('js/ajax-crud.js')}}"></script> -->
->>>>>>> a76270f864d7a4217f1b23ad9e1b51d6c8d6be29
+
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the

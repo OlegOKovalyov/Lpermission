@@ -50,7 +50,6 @@
     </div>
 
     <!-- <a href="{{ route('users.create') }}" class="btn btn-success">Add User</a> -->
-<<<<<<< HEAD
     <a href="{{ URL::to('users/create') }}" class="btn btn-success " data-toggle="modal" data-target="#userModal">Add User</a>
     <!-- <button class="btn btn-warning" type="submit" id="add">
         <span class="glyphicon glyphicon-plus"></span> Add Users
@@ -64,16 +63,17 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"></h4>
+                <button type="button" class="close" data-dismiss="modal" style="margin-right: 1.5rem; margin-top: 1rem;">&times;</button>
+                <h1 class="modal-title"></h1>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" role="form">
+                <form class="form-horizontal" role="form" data-toggle="validator">
 <div id="form_result"></div>
                     <div class="form-group row add">
                         <label class="control-label col-sm-2" for="name">Name :</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="name" name="name" required>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Name" data-validate="true" required>
+                            <div class="help-block with-errors"></div>
                             <p class="error text-center alert alert-danger hidden"></p>
                         </div>
                     </div>
@@ -81,7 +81,8 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="email">Email :</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="email" name="email" required>
+                            <input type="text" class="form-control" id="email" name="email" placeholder="Email" data-error="Bruh, that email address is invalid" required>
+                            <div class="help-block with-errors"></div>
                             <p class="error text-center alert alert-danger hidden"></p>
                         </div>
                     </div>
@@ -96,40 +97,28 @@
                         @endforeach
                         </div>        
                     </div>                    
-=======
-    <a href="{{ route('users.create')}}" class="btn btn-success" data-toggle="modal" data-target="#userModal">Add User</a>
-
-    <!-- Modal -->
-    <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-        </div>
-      </div>
-    </div> 
->>>>>>> a76270f864d7a4217f1b23ad9e1b51d6c8d6be29
-
                     <div class="form-group">
                       {{ Form::label('password', 'Password :', array('class' => 'control-label col-sm-2')) }}
                       <div class="col-sm-10">
-                          {{ Form::password('password', array('class' => 'form-control')) }}
+                          {{ Form::password('password', array('id' => 'password', 'class' => 'form-control',  'data-minlength' => '6', 'placeholder' => "Password", 'required')) }}
                       </div>
                     </div>
 
                     <div class="form-group">
                       {{ Form::label('password', 'Confirm Password :', array('class' => 'control-label col-sm-2')) }}
                       <div class="col-sm-10">        
-                          {{ Form::password('password_confirmation', array('class' => 'form-control')) }}
+                          {{ Form::password('password_confirmation', array('class' => 'form-control', 'data-match' => '#password', 'data-match-error' => "Whoops, these don't match", 'placeholder' => "Confirm Password", 'required')) }}
                       </div>
                     </div>
                 
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-warning" type="submit" id="add-modal" data-method="serialize">
-                    <span class="glyphicon glyphicon-plus"></span>Save User
+                <button class="btn btn-primary" type="submit" id="add-modal" data-method="serialize">
+                    <span class="glyphicon glyphicon-plus"></span> Add
                 </button>
-                <button class="btn btn-warning" type="button" data-dismiss="modal">
-                    <span class="glyphicon glyphicon-remove"></span>Close
+                <button class="btn btn-link" type="button" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-remove"></span> Close
                 </button>                
             </div>
 
@@ -144,5 +133,7 @@
     </div>
   </div>
 </div> 
+
+<!-- <script defer src="{{ asset('js/ajax-modals.js') }}" ></script> -->
 
 @endsection
