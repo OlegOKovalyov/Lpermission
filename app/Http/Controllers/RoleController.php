@@ -22,7 +22,7 @@ class RoleController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index() {echo __METHOD__;
         $roles = Role::all();//Get all roles
 
         return view('roles.index')->with('roles', $roles);

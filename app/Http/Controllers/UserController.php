@@ -86,6 +86,7 @@ class UserController extends Controller {
     * @return \Illuminate\Http\Response
     */
     public function show($id) {
+        echo __METHOD__;
         return redirect('users'); 
     }
 

@@ -596,12 +596,12 @@ $("#add-modal").click(function(e){
               "<td>" + returnCheckboxSelect() + "</td>"+
               "<td class='with-buttons'>" +
               
-                "<a  href='/users/" + data.id + "/edit' class='edit-modal btn btn-primary btn-xs edit' data-id='{{$user->id}}' data-name='luser' data-email='{{$user->email}}' data-toggle='modal' data-target='#userEditModal'>" +
+                "<a  href='/users/" + data.id + "/edit' class='edit-modal btn btn-primary btn-xs edit' data-id='" + data.id + "' data-name='" + data.name + "' data-email='" + data.email + "' data-toggle='modal' data-target='#userEditModal'>" +
                     "<span class='glyphicon glyphicon-edit'></span>" + " Edit" +
                 "</a>" +
 
-                "<form method='POST' action='/users/{{$user->id}}' accept-charset='UTF-8'>" + "<input name='_method' type='hidden' value='DELETE'>" + "<input name='_token' type='hidden'>" +
-                  "<button onclick='return confirm(" + "Are you sure you want to delete {{ $user->name }}?" + ")' class='btn btn-danger btn-xs' name='delete' data-id='" + data.id + "' data-title='" + data.name + "' data-body='" + data.email + "'>" +
+                "<form method='POST' action='/users/" + data.id + "' accept-charset='UTF-8'>" + "<input name='_method' type='hidden' value='DELETE'>" + "<input name='_token' type='hidden'>" +
+                  "<button onclick='return confirm(" + "Are you sure you want to delete " + data.name + "?" + ")' class='btn btn-danger btn-xs' name='delete' data-id='" + data.id + "' data-title='" + data.name + "' data-body='" + data.email + "'>" +
                     "<i class='glyphicon glyphicon-remove'>" + "</i>" + "Delete" + 
                   "</button>" + 
                 "</form>" +
