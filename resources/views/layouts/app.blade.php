@@ -590,23 +590,14 @@ $("#add-modal").click(function(e){
         data: data,
         success: function(result) {
           if ((result.errors)) {
-
-jQuery('.alert-danger').html('');
-
-jQuery.each(result.errors, function(key, value){
-  jQuery('.alert-danger').show();
-  jQuery('.alert-danger').append('<li>'+value+'</li>');
-});
-
-            $('.error').removeClass('hidden');
-            $('.error').text(result.errors.name);
-            $('.error').text(result.errors.email);
-            $('#create').modal('hide');
-            alert("Bad submit");
+            $('.alert-warning').html('');
+            $.each(result.errors, function(key, value){
+              $('.alert-warning').show();
+              $('.alert-warning').append('<li>'+value+'</li>');
+            });
           } else {
             $('.error').remove(); 
             $('#table').append("<tr class='user_" + result.id + "'>"+
-              //"<td>" + result.id + "</td>"+
               "<td>" + result.name + "</td>"+
               "<td>" + result.email + "</td>"+
               "<td>" + parseDateInPhpFormat() + "</td>"+
@@ -626,8 +617,10 @@ jQuery.each(result.errors, function(key, value){
 
               "</td>" +
             "</tr>");
+            $('.alert-warning').html('');
+            $('.alert-warning').hide();
             $('#create').modal('hide');
-            alert('\"' +  result.name + '\" has been created successfully!');
+            // alert('\"' +  result.name + '\" has been created successfully!');
             $('.form-horizontal').trigger('reset');
           }
         }

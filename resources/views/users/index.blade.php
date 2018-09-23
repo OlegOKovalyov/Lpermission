@@ -20,7 +20,7 @@
                     <th>Operations</th>
                 </tr>
             </thead>
-{{ csrf_field() }}
+
             <tbody>
                 @foreach ($users as $user)
                 <!-- <tr> -->
@@ -70,22 +70,15 @@
                 <h1 class="modal-title"></h1>
             </div>
             <div class="modal-body">
-<div id="form_result"></div>
-<div class="alert alert-danger" style="display:none"></div>
-  <div class="alert alert-danger hidden"> 
-      <?php foreach($errors->all() as $error): ?>
-        <li>{{ $error }}</li>
-      <?php endforeach; ?>
-  </div>
+              <div class="alert alert-warning" style="display:none"></div>
 
                 <form class="form-horizontal" role="form" data-toggle="validator">
-
+                    {{ csrf_field() }}
                     <div class="form-group row add">
                         <label class="control-label col-sm-2" for="name">Name :</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="name" name="name" placeholder="Name" data-validate="true" required>
                             <div class="help-block with-errors"></div>
-                            <p class="error text-center alert alert-danger hidden"></p>
                         </div>
                     </div>
 
@@ -94,7 +87,6 @@
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="email" name="email" placeholder="Email" data-error="Bruh, that email address is invalid" required>
                             <div class="help-block with-errors"></div>
-                            <p class="error text-center alert alert-danger hidden"></p>
                         </div>
                     </div>
 
@@ -144,7 +136,5 @@
     </div>
   </div>
 </div> 
-
-<!-- <script defer src="{{ asset('js/ajax-modals.js') }}" ></script> -->
 
 @endsection

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\User;
 use Auth;
 use Validator;
-//use Response;
+use Response;
 use Illuminate\Support\Facades\Input;
 //use App\Http\Request;
 
@@ -196,8 +196,9 @@ class UserController extends Controller {
         // }
 
         $validator = Validator::make ( Input::all(), $rules);
-        if ($validator->fails())
-        return Response::json(array('errors'=> $validator->getMessageBag()->toarray()));
+        // if ($validator->fails())
+        // return Response::json(array('errors'=> $validator->getMessageBag()->toarray()));
+        if ($validator->fails()) { return Response::json(['isvalid'=>false,'errors'=>$validator->messages()]); }
 
         else {
             $user = User::create($request->only('name', 'email', 'password')); //Retrieving only the email and password data
