@@ -435,7 +435,7 @@ desired effect
         var rules = {
             name: {
                 notEmpty: {
-                    message: "The title is required"
+                    message: "The name is required"
                 },              
                 stringLength: {
                     min: 3,
@@ -523,11 +523,14 @@ desired effect
 
         };
 
-        smValidator("create", rules, 1);
+        smValidator("create", rules, 3);
     })(jQuery);
 </script>
 
 <!-- <script src="{{ asset('js/ajax-modals.js') }}" ></script> -->
+
+<script src="{{ asset('js/date-phpformat-func.js') }}"></script>
+
 <script>
 /* {{-- Ajax Form Delete --}} */
 $(document).ready(function(){
@@ -543,10 +546,11 @@ $(document).ready(function(){
 
 
 
+
 /* {{-- Ajax Form Add User --}} */
 $(document).ready(function() {
 
-  function returnCheckboxSelect() {
+  function returnCheckboxSelect() { // выводит массив из названий выбранных меток <input type="checkbox"...>
     var chkbox = document.getElementsByName('roles[]');
     var vals = "";
     for (var i=0, n=chkbox.length;i<n;i++) {
@@ -557,6 +561,11 @@ $(document).ready(function() {
         }
     }
     return(vals); 
+  }
+
+  function parseDateInPhpFormat() { // преобразует дату из '2018-09-23 08:58:34' в 'September 23, 2018 08:57am'
+    var d = new Date(); 
+    return d_string = d.format("F d, Y h:ia");
   }
 
 /* Create 'Add User' modal AJAX form */
@@ -579,29 +588,38 @@ $("#add-modal").click(function(e){
         type:'POST',
         url: "{{ url('/users/addUser') }}",
         data: data,
-        success: function(data) {
-          if ((data.errors)) {
+        success: function(result) {
+          if ((result.errors)) {
+
+jQuery('.alert-danger').html('');
+
+jQuery.each(result.errors, function(key, value){
+  jQuery('.alert-danger').show();
+  jQuery('.alert-danger').append('<li>'+value+'</li>');
+});
+
             $('.error').removeClass('hidden');
-            $('.error').text(data.errors.name);
-            $('.error').text(data.errors.email);
+            $('.error').text(result.errors.name);
+            $('.error').text(result.errors.email);
             $('#create').modal('hide');
             alert("Bad submit");
           } else {
             $('.error').remove(); 
-            $('#table').append("<tr class='user_" + data.id + "'>"+
-              //"<td>" + data.id + "</td>"+
-              "<td>" + data.name + "</td>"+
-              "<td>" + data.email + "</td>"+
-              "<td>" + data.created_at + "</td>"+
+            $('#table').append("<tr class='user_" + result.id + "'>"+
+              //"<td>" + result.id + "</td>"+
+              "<td>" + result.name + "</td>"+
+              "<td>" + result.email + "</td>"+
+              "<td>" + parseDateInPhpFormat() + "</td>"+
+              // {{-- "<td>" + "{{ $user->created_at->format('F d, Y h:ia') }}" + "</td>"+ // работает, но ломает другие страницы --}}
               "<td>" + returnCheckboxSelect() + "</td>"+
               "<td class='with-buttons'>" +
               
-                "<a  href='/users/" + data.id + "/edit' class='edit-modal btn btn-primary btn-xs edit' data-id='" + data.id + "' data-name='" + data.name + "' data-email='" + data.email + "' data-toggle='modal' data-target='#userEditModal'>" +
+                "<a  href='/users/" + result.id + "/edit' class='edit-modal btn btn-primary btn-xs edit' data-id='" + result.id + "' data-name='" + result.name + "' data-email='" + result.email + "' data-toggle='modal' data-target='#userEditModal'>" +
                     "<span class='glyphicon glyphicon-edit'></span>" + " Edit" +
                 "</a>" +
 
-                "<form method='POST' action='/users/" + data.id + "' accept-charset='UTF-8'>" + "<input name='_method' type='hidden' value='DELETE'>" + "<input name='_token' type='hidden'>" +
-                  "<button onclick='return confirm(" + "Are you sure you want to delete " + data.name + "?" + ")' class='btn btn-danger btn-xs' name='delete' data-id='" + data.id + "' data-title='" + data.name + "' data-body='" + data.email + "'>" +
+                "<form method='POST' action='/users/" + result.id + "' accept-charset='UTF-8'>" + "<input name='_method' type='hidden' value='DELETE'>" + "<input name='_token' type='hidden'>" +
+                  "<button onclick='return confirm(" + "Are you sure you want to delete " + result.name + "?" + ")' class='btn btn-danger btn-xs' name='delete' data-id='" + result.id + "' data-title='" + result.name + "' data-body='" + result.email + "'>" +
                     "<i class='glyphicon glyphicon-remove'>" + "</i>" + "Delete" + 
                   "</button>" + 
                 "</form>" +
@@ -609,7 +627,7 @@ $("#add-modal").click(function(e){
               "</td>" +
             "</tr>");
             $('#create').modal('hide');
-            alert('\"' +  data.name + '\" has been created successfully!');
+            alert('\"' +  result.name + '\" has been created successfully!');
             $('.form-horizontal').trigger('reset');
           }
         }

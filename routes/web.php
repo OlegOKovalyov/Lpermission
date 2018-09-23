@@ -22,15 +22,15 @@ use Spatie\Permission\Models\Permission;
 
 Auth::routes();
 
-Route::get('/', 'HomeController@index')->name('home');
+//Route::get('/', 'HomeController@index')->name('home');
 
 
-Route::resource('users', 'UserController');
+//Route::resource('users', 'UserController');
 
 
 Route::group(['middleware' => ['web']], function() {
   Route::resource('users','UserController');
-  Route::post('/users/addUser', 'UserController@addUser');
+  Route::post('/users/addUser', 'UserController@addUser', ['addUser'=>'users.create']);
   // Route::post ( '/update', 'UserController@update' );
   // Route::post ( '/add', 'UserController@store' );
   // Route::post ( '/delete', 'UserController@destroy' );

@@ -86,7 +86,6 @@ class UserController extends Controller {
     * @return \Illuminate\Http\Response
     */
     public function show($id) {
-        echo __METHOD__;
         return redirect('users'); 
     }
 
@@ -178,26 +177,38 @@ class UserController extends Controller {
 
     public function addUser(Request $request) {
     //Validate name, email and password fields
-        $this->validate($request, [
-            'name'=>'required|max:120',
-            'email'=>'required|email|unique:users',
-            //'password'=>'required|min:6|confirmed'
-        ]);
+        // $this->validate($request, [
+        //     'name'=>'required|max:120',
+        //     'email'=>'required|email|unique:users',
+        //     'password'=>'required|min:6|confirmed'
+        // ]);
+        // if( $request->isMethod('post') ) {
 
-        // $validator = Validator::make ( Input::all(), $rules);
-        // if ($validator->fails())
-        // return Response::json(array('errors'=> $validator->getMessageBag()->toarray()));
+            $rules = [
+                'name' => 'required|max:120',
+                'email' => 'required|email|unique:users',
+                'password' => 'required|min:6|confirmed'
+            ];
 
-        // else {
+        //     $this->validate( $request,$rules );
+
+        //     dump( $request->all() );
+        // }
+
+        $validator = Validator::make ( Input::all(), $rules);
+        if ($validator->fails())
+        return Response::json(array('errors'=> $validator->getMessageBag()->toarray()));
+
+        else {
             $user = User::create($request->only('name', 'email', 'password')); //Retrieving only the email and password data
             //$user = new User();
             $user->name = $request->name;
             $user->email = $request->email;
             $user->password = $request->password;
-        // }
+        }
 
         $roles = $request['roles']; //Retrieving the roles field
-    //Checking if a role was selected
+        //Checking if a role was selected
         if (isset($roles)) {
 
             foreach ($roles as $role) {
@@ -207,6 +218,7 @@ class UserController extends Controller {
         }
 
         $user->save();
+        // return response()->json($user);
         return response()->json($user);
 
     //Redirect to the users.index view and display message

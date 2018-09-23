@@ -54,9 +54,12 @@
     <!-- <button class="btn btn-warning" type="submit" id="add">
         <span class="glyphicon glyphicon-plus"></span> Add Users
     </button> -->
-    <a href="#" class="create-modal btn btn-success btn-sm">
+    <!-- <a href="#" class="create-modal btn btn-success btn-sm">
         <i class="glyphicon glyphicon-plus"></i>
-    </a>
+    </a> -->
+    <button class="create-modal btn btn-success btn-sm">
+      <i class="glyphicon glyphicon-plus"></i>
+    </button>    
 
 {{-- Form Create User Modal --}} 
 <div id="create" class="modal fade" role="dialog">   
@@ -67,8 +70,16 @@
                 <h1 class="modal-title"></h1>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" role="form" data-toggle="validator">
 <div id="form_result"></div>
+<div class="alert alert-danger" style="display:none"></div>
+  <div class="alert alert-danger hidden"> 
+      <?php foreach($errors->all() as $error): ?>
+        <li>{{ $error }}</li>
+      <?php endforeach; ?>
+  </div>
+
+                <form class="form-horizontal" role="form" data-toggle="validator">
+
                     <div class="form-group row add">
                         <label class="control-label col-sm-2" for="name">Name :</label>
                         <div class="col-sm-10">
