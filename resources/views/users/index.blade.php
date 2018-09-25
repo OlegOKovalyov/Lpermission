@@ -32,9 +32,11 @@
                     <td>{{  $user->roles()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of roles associated to a user and convert to string --}}
                     <td class="with-buttons">
                     <!-- <a href="{{ route('users.edit', $user->id) }}" class="btn btn-info pull-left edit-modal" data-toggle="modal" data-target="#userEditModal" style="margin-right: 3px;">Edit</a> -->
-                    <a  href="{{ route('users.edit', $user->id) }}" class="edit-modal btn btn-primary btn-xs edit" data-id="{{$user->id}}" data-name="{{$user->name}}" data-email="{{$user->email}}" data-toggle="modal" data-target="#userEditModal">
+                    <a  href="{{ route('users.edit', $user->id) }}" class="edit-user-modal btn btn-primary btn-xs edit" data-id="{{$user->id}}" data-name="{{$user->name}}" data-email="{{$user->email}}" data-toggle="modal" data-target="#editUser">
                     <span class="glyphicon glyphicon-edit"></span> Edit
                     </a>
+
+                    <button class="edit-user-modal btn btn-primary btn-xs edit" data-id="{{$user->id}}" data-name="{{$user->name}}" data-email="{{$user->email}}" data-toggle="modal" data-target="#editUser"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
 
                     {!! Form::open(['method' => 'DELETE', 'route' => ['users.destroy', $user->id] ]) !!}
                     {{--{!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}--}}
@@ -54,23 +56,24 @@
     <!-- <button class="btn btn-warning" type="submit" id="add">
         <span class="glyphicon glyphicon-plus"></span> Add Users
     </button> -->
-    <!-- <a href="#" class="create-modal btn btn-success btn-sm">
+    <!-- <a href="#" class="add-user-modal btn btn-success btn-sm">
         <i class="glyphicon glyphicon-plus"></i>
     </a> -->
-    <button class="create-modal btn btn-success btn-sm">
-      <i class="glyphicon glyphicon-plus"></i>
+    <button class="add-user-modal btn btn-success btn-sm">
+      <i class="glyphicon glyphicon-plus"></i> Add User
     </button>    
 
-{{-- Form Create User Modal --}} 
-<div id="create" class="modal fade" role="dialog">   
+{{-- Modal Form 'Add User' for button 'Add User' ------------------------------------------------------------ADD-----}}
+<div id="createUser" class="modal fade" role="dialog">   
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" style="margin-right: 1.5rem; margin-top: 1rem;">&times;</button>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h1 class="modal-title"></h1>
             </div>
             <div class="modal-body">
-              <div class="alert alert-warning" style="display:none"></div>
+              <div class="alert alert-warning" hidden></div>
+              <div class="alert alert-success" hidden=""></div>
 
                 <form class="form-horizontal" role="form" data-toggle="validator">
                     {{ csrf_field() }}
@@ -95,7 +98,7 @@
                           <?php $i=0; ?>
                         @foreach ($roles as $role)
                             {{ Form::checkbox('roles[]',  $role->id ) }}
-                            {{ Form::label($role->name, ucfirst($role->name), array('id'=>'roles_chbxs' . $i,'class'=>'')) }}<br>
+                            {{ Form::label($role->name, ucfirst($role->name), array('class'=>'roles_chbxs' . $i,'id'=>'')) }}<br>
                             <?php $i++; ?>
                         @endforeach
                         </div>        
@@ -118,7 +121,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" type="submit" id="add-modal" data-method="serialize">
-                    <span class="glyphicon glyphicon-plus"></span> Add
+                    <span class="glyphicon glyphicon-plus"></span> Save
                 </button>
                 <button class="btn btn-link" type="button" data-dismiss="modal">
                     <span class="glyphicon glyphicon-remove"></span> Close
@@ -128,6 +131,83 @@
         </div>
     </div>
 </div>
+
+
+{{-- Modal Form 'Edit User' and 'Delete User' for buttons 'Edit' and 'Delete' -----------------------EDIT-DELETE-----}}
+<div id="editUser"class="modal fade" role="dialog">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h1 class="modal-title"></h1>
+            </div>
+            <div class="modal-body">
+              <div class="alert alert-warning" hidden></div>
+              <div class="alert alert-success" hidden=""></div>
+
+                <form class="form-horizontal" role="modal" data-toggle="validator">
+                    {{ csrf_field() }}
+                    <div class="form-group">
+                        <label class="control-label col-sm-2"for="fid">ID :</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="fid" name="fid" disabled>
+                        </div>
+                    </div>             
+                    <div class="form-group row edit">
+                        <label class="control-label col-sm-2" for="name">Name :</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="name" placeholder="Name" required="">
+                        </div>
+                      </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="email">Email :</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="email" placeholder="Email">
+                        </div>
+                    </div>
+                    <div class='form-group'>
+                        <div id="roles_checkboxes_edit" class="col-sm-10 col-sm-offset-2">
+                          <?php $i=0; ?>
+                        @foreach ($roles as $role)
+                            {{ Form::checkbox('roles[]',  $role->id ) }}
+                            {{ Form::label($role->name, ucfirst($role->name), array('class'=>'roles_chbxs_edit' . $i)) }}<br>
+                            <?php $i++; ?>
+                        @endforeach
+                        </div>        
+                    </div>
+                    <div class="form-group">
+                      {{ Form::label('password', 'Password :', array('class' => 'control-label col-sm-2')) }}
+                      <div class="col-sm-10">
+                          {{ Form::password('password', array('id' => 'password', 'class' => 'form-control',  'data-minlength' => '6', 'placeholder' => "Password", 'required')) }}
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      {{ Form::label('password', 'Confirm Password :', array('class' => 'control-label col-sm-2')) }}
+                      <div class="col-sm-10">        
+                          {{ Form::password('password_confirmation', array('class' => 'form-control', 'data-match' => '#password', 'data-match-error' => "Whoops, these don't match", 'placeholder' => "Confirm Password", 'required')) }}
+                      </div>
+                    </div>                     
+                </form>
+                        {{-- Form Delete User --}}
+                <div class="deleteUser">
+                  Are You sure want to delete <span class="title"></span>?
+                  <span class="hidden id"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="submit" id="edit-modal">
+                    <span class="glyphicon glyphicon-edit"></span> Update
+                </button>
+                <button class="btn btn-link" type="button" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-remove"></span> Close
+                </button>
+          </div>
+        </div>
+    </div>
+</div>
+
 
 <!-- Modal -->
 <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel">

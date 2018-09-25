@@ -40,7 +40,7 @@ p.teaser {
 	display: flex;
 }
 
-.with-buttons .edit-modal {
+.with-buttons .edit-user-modal {
 	display: inline-block;
 	margin-right: .5rem;
 }
@@ -48,4 +48,13 @@ p.teaser {
 .main-footer {
 	margin-left: 0;
 	padding: 3rem;
+}
+
+.modal-header .close {
+	margin-right: 1.5rem;
+	margin-top: 1rem;
+}
+
+.modal-body .alert.alert-warning li {
+	list-style-position: inside;
 }

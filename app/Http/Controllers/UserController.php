@@ -86,7 +86,7 @@ class UserController extends Controller {
     * @return \Illuminate\Http\Response
     */
     public function show($id) {
-        return redirect('users'); 
+        return redirect('users');
     }
 
     /**
@@ -95,7 +95,7 @@ class UserController extends Controller {
     * @param  int  $id
     * @return \Illuminate\Http\Response
     */
-    public function edit($id) {
+    public function edit($id) {echo __METHOD__;
         $user = User::findOrFail($id); //Get user with specified id
         $roles = Role::get(); //Get all roles
 
@@ -132,6 +132,7 @@ class UserController extends Controller {
         return redirect()->route('users.index')
             ->with('flash_message',
              'User successfully edited.');
+        // return response()->json($user);
     }
 
     /**
@@ -219,14 +220,42 @@ class UserController extends Controller {
         }
 
         $user->save();
-        // return response()->json($user);
         return response()->json($user);
 
     //Redirect to the users.index view and display message
         // return redirect()->route('users.index')
         //     ->with('flash_message',
         //      'User successfully added.');
-    }    
+    }
+
+    public function editUser(Request $request, $id){
+        // $user = User::findOrFail($id); //Get user with specified id
+
+        // Validate name, email and password fields    
+        // $this->validate($request, [
+        //     'name'=>'required|max:120',
+        //     'email'=>'required|email|unique:users,email,'.$id,
+        //     'password'=>'required|min:6|confirmed'
+        // ]);
+        // $input = $request->only(['name', 'email', 'password']); //Retreive the name, email and password fields
+        // $roles = $request['roles']; //Retreive all roles
+        // $user->fill($input)->save();
+
+        // if (isset($roles)) {        
+        //     $user->roles()->sync($roles);  //If one or more role is selected associate user to roles          
+        // }        
+        // else {
+        //     $user->roles()->detach(); //If no role is selected remove exisiting role associated to a user
+        // }
+        // 
+        $user = User::find ($request->id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = $request->password;
+        $user->save();
+
+    return response()->json($user);
+    }      
 
 
 }

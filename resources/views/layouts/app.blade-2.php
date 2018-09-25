@@ -270,8 +270,6 @@ desired effect
         <li class="active"><a href="{{ route('roles.index') }}"><i class="fa fa-link"></i> <span>Manage Roles</span></a></li>
         <li><a href="{{ route('permissions.index')}}"><i class="fa fa-link"></i> <span>Manage Permissions</span></a></li>
 
-        <li><a href="{{ route('categories.index') }}"><i class="fa fa-link"></i> <span>Categories</span></a></li>
-
 
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Manage Users</span>
@@ -280,8 +278,8 @@ desired effect
               </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="{{ route('users.create')}}">Create User</a></li>
-            <!-- <li><a href="{{ route('users.create')}}" data-toggle="modal" data-target="#myModal">Create User</a></li> -->
+            <!-- <li><a href="{{ route('users.create')}}">Create User</a></li> -->
+            <li><a href="{{ route('users.create')}}" data-toggle="modal" data-target="#myModal">Create User</a></li>
             <li><a href="{{ route('users.index')}}">User List</a></li>
             <!-- <li><a href="{{ route('users.index')}}" data-toggle="modal" data-target="#myModal">User List</a></li> -->
 
@@ -433,9 +431,9 @@ desired effect
 <script src="{{ asset('js/sm-validator.js') }}"></script>
 <script src="{{ asset('js/sm-validator-config.js') }}"></script>
 
-<script src="{{ asset('js/date-phpformat-func.js') }}"></script>
+<!-- <script src="{{ asset('js/ajax-modals.js') }}" ></script> -->
 
-<script src="{{ asset('js/ajax-crud-user.js') }}" ></script>
+<script src="{{ asset('js/date-phpformat-func.js') }}"></script>
 
 <script>
 /* {{-- Ajax Form Delete --}} */
@@ -451,6 +449,8 @@ $(document).ready(function(){
 });    
 
 
+
+
 /* {{-- Ajax Form Add User --}} */
 $(document).ready(function() {
 
@@ -460,50 +460,23 @@ $(document).ready(function() {
     for (var i=0, n=chkbox.length;i<n;i++) {
         if (chkbox[i].checked) 
         {
-          var label = ".roles_chbxs" + i;
+          var label = "#roles_chbxs" + i;
           vals += " " + $(label).text();
         }
     }
     return(vals); 
   }
 
-  // function returnCheckboxSelectEdit() { // выводит массив из названий выбранных меток <input type="checkbox"...>
-  //   var chkbox = document.getElementsByName('roles[]');
-  //   var vals = "";
-  //   for (var i=0, n=chkbox.length;i<n;i++) {
-  //       if (chkbox[i].checked) 
-  //       {
-  //         var label = ".roles_chbxs_edit" + i;
-  //         vals += " " + $(label).text();
-  //       }
-  //   }
-  //   return(vals); 
-  // }  
-
-  function returnCheckboxes(divId) { // выводит массив из названий выбранных меток <input type="checkbox"...>
-    var chkbox = document.getElementsByName('roles[]');
-    var vals = "";
-    for (var i=0, n=chkbox.length;i<n;i++) {
-        if (chkbox[i].checked) 
-        {
-          var label = divId + " " + ".roles_chbxs_edit" + i;
-          vals += " " + $(label).text();
-        }
-    }
-    return(vals); 
-  }  
-
-  function parseDateInPhpFormat() { // преобразует дату из '2018-09-23 08:58:34' в 'September 23, 2018 8:57am'
+  function parseDateInPhpFormat() { // преобразует дату из '2018-09-23 08:58:34' в 'September 23, 2018 08:57am'
     var d = new Date(); 
     return d_string = d.format("F d, Y h:ia");
   }
 
-/* Create 'Add User' modal AJAX form *************************************************************************/
-$(document).on('click', '.add-user-modal', function(){
-  $('#createUser').modal('show');
-  $('#createUser .form-horizontal').trigger('reset');
-  $('#createUser .form-horizontal').show();
-  $('#createUser .modal-title').html("<i class='fa fa-user-plus' style='margin-left:1rem;'></i>Add User");
+/* Create 'Add User' modal AJAX form */
+$(document).on('click', '.create-modal', function(){
+  $('#create').modal('show');
+  $('.form-horizontal').show();
+  $('.modal-title').html("<i class='fa fa-user-plus' style='margin-left:1rem;'></i>Add New User");
 });  
 
 $("#add-modal").click(function(e){
@@ -513,153 +486,103 @@ $("#add-modal").click(function(e){
       }
     })    
     e.preventDefault();
-    var data = $('#createUser .form-horizontal').serialize(); alert(data);
+    var data = $('.form-horizontal').serialize();
     $.ajax({
-      dataType: 'json',
-      type:'POST',
-      url: "{{ url('/users/addUser') }}",
-      data: data,
-      success: function(result) {
-        if ((result.errors)) {
-          $('#createUser .alert-warning').html('');
-          $.each(result.errors, function(key, value){
-            $('#createUser .alert-warning').show();
-            $('#createUser .alert-warning').append('<li>' + value + ' ' + '</li>');
-          });
-        } else {
-          $('.error').remove(); 
-          $('#table').append("<tr class='user_" + result.id + "'>"+
-            "<td>" + result.name + "</td>"+
-            "<td>" + result.email + "</td>"+
-            "<td>" + parseDateInPhpFormat() + "</td>"+
-            // {{-- "<td>" + "{{ $user->created_at->format('F d, Y h:ia') }}" + "</td>"+ // работает, но ломает другие страницы --}}
-            "<td>" + returnCheckboxSelect() + "</td>"+
-            "<td class='with-buttons'>" +
-            
-              "<a  href='/users/" + result.id + "/edit' class='edit-user-modal btn btn-primary btn-xs edit' data-id='" + result.id + "' data-name='" + result.name + "' data-email='" + result.email + "' data-toggle='modal' data-target='#userEditModal'>" +
-                  "<span class='glyphicon glyphicon-edit'></span>" + " Edit" +
-              "</a>" +
+        dataType: 'json',
+        type:'POST',
+        url: "{{ url('/users/addUser') }}",
+        data: data,
+        success: function(result) {
+          if ((result.errors)) {
+            $('.alert-warning').html('');
+            $.each(result.errors, function(key, value){
+              $('.alert-warning').show();
+              $('.alert-warning').append('<li>'+value+'</li>');
+            });
+          } else {
+            $('.error').remove(); 
+            $('#table').append("<tr class='user_" + result.id + "'>"+
+              "<td>" + result.name + "</td>"+
+              "<td>" + result.email + "</td>"+
+              "<td>" + parseDateInPhpFormat() + "</td>"+
+              // {{-- "<td>" + "{{ $user->created_at->format('F d, Y h:ia') }}" + "</td>"+ // работает, но ломает другие страницы --}}
+              "<td>" + returnCheckboxSelect() + "</td>"+
+              "<td class='with-buttons'>" +
+              
+                "<a  href='/users/" + result.id + "/edit' class='edit-modal btn btn-primary btn-xs edit' data-id='" + result.id + "' data-name='" + result.name + "' data-email='" + result.email + "' data-toggle='modal' data-target='#userEditModal'>" +
+                    "<span class='glyphicon glyphicon-edit'></span>" + " Edit" +
+                "</a>" +
 
-              "<form method='POST' action='/users/" + result.id + "' accept-charset='UTF-8'>" + "<input name='_method' type='hidden' value='DELETE'>" + "<input name='_token' type='hidden'>" +
-                "<button onclick='return confirm(" + "Are you sure you want to delete " + result.name + "?" + ")' class='btn btn-danger btn-xs' name='delete' data-id='" + result.id + "' data-title='" + result.name + "' data-body='" + result.email + "'>" +
-                  "<i class='glyphicon glyphicon-remove'>" + "</i>" + "Delete" + 
-                "</button>" + 
-              "</form>" +
+                "<form method='POST' action='/users/" + result.id + "' accept-charset='UTF-8'>" + "<input name='_method' type='hidden' value='DELETE'>" + "<input name='_token' type='hidden'>" +
+                  "<button onclick='return confirm(" + "Are you sure you want to delete " + result.name + "?" + ")' class='btn btn-danger btn-xs' name='delete' data-id='" + result.id + "' data-title='" + result.name + "' data-body='" + result.email + "'>" +
+                    "<i class='glyphicon glyphicon-remove'>" + "</i>" + "Delete" + 
+                  "</button>" + 
+                "</form>" +
 
-            "</td>" +
-          "</tr>");
-          $('#createUser .alert-warning').html('');
-          $('#createUser .alert-warning').hide();
-          $('#createUser .alert-success').html('\"<strong>' +  result.name + '</strong>\" has been created successfully!');
-          $('#createUser .alert-success').fadeIn("slow");
-          setTimeout(function () {
-            $('#createUser .alert-success').fadeOut("slow");
-            $('#createUser .alert-success').hide();
-            $('#createUser').modal('hide');
-          }, 2000);
-          // alert('\"' +  result.name + '\" has been created successfully!');
-          $('#createUser .form-horizontal').trigger('reset');
+              "</td>" +
+            "</tr>");
+            $('.alert-warning').html('');
+            $('.alert-warning').hide();
+            $('#create').modal('hide');
+            // alert('\"' +  result.name + '\" has been created successfully!');
+            $('.form-horizontal').trigger('reset');
+          }
         }
-      }
     })
-  });
+    // .done(function(responce){
+    //     alert(responce);
+    //     // getPageData();
+    //     // $("#create").modal('hide');
+    //     // alert('Item Created Successfully.');
+    // });
+    
+    // alert($('input[type=checkbox]').val());
 
-
-/* {{-- Ajax Form Edit User --}} *****************************************************************************/
-$(document).on('click', '.edit-user-modal', function() {
-  $('#editUser .form-horizontal').show();
-  $('#editUser .modal-title').html("<i class='fa fa-user-plus' style='margin-left:1rem;'></i>Edit User");
-  // $('#fid').val($(this).data('id'));
-  // $('#editUser input[name=name]').val($(this).data('name'));
-  // $('#editUser input[name=email]').val($(this).data('email'));
-  // $('#editUser input[name=password]').val($(this).data('password'));
-  var id = $(this).data('id');
-  var name = $(this).data('name');
-  var email = $(this).data('email');
-  // var password = $(this).data('password');
-  $('#editUser').modal('show');
-
-  $('#fid').val(id);
-  $('#editUser input[name=name]').val(name);
-  $('#editUser input[name=email]').val(email);
-  // $('#editUser input[name=password]').val(password);
-  
-  // $('#editUser').modal('show');
 });
 
-$('.edit').click(function(e) {
-  $.ajaxSetup({
-    headers: {
-      'X-CSRF-TOKEN': $('input[name=_token]').val()
-    }
-  })  
-  e.preventDefault();
-  var serdata = $('#editUser .form-horizontal').serialize();
-alert(serdata);
-  $.ajax({
-    dataType: 'json',
-    type: 'PUT',
-    // url: "{{ url('/editUser') }}",
-    // url: "{{ url('/users/editUser') }}",
-    // url: '/editUser',
-    ///////url: "{{ url('/users/editUser') }}",
-    url: "{{ url('/users/edit') }}",
-    // url: "/users/" + data.id + "/editUser') }}",
-    data: serdata,
-    // data: {
-    //   '_token': $('input[name=_token]').val(),
-    //   'id': $("#fid").val(),
-    //   'name': $('#editUser input[name=name]').val(),
-    //   'email': $('#editUser input[name=email]').val(),
-    //   'password': $('#editUser input[name=password]').val()
-    // },
-    success: function(data) {
-      $('.post' + data.id).replaceWith(" "+
-      "<tr class='post" + data.id + "'>"+
-      "<td>" + data.id + "</td>"+
-      "<td>" + data.title + "</td>"+
-      "<td>" + returnCheckboxes('roles_checkboxes_edit') + "</td>"+
-      "<td>" + data.created_at + "</td>"+
-      "<td><button class='show-modal btn btn-info btn-sm' data-id='" + data.id + "' data-title='" + data.title + "' data-body='" + data.body + "'><span class='fa fa-eye'></span></button> <button class='edit-modal btn btn-warning btn-sm' data-id='" + data.id + "' data-title='" + data.title + "' data-body='" + data.body + "'><span class='glyphicon glyphicon-pencil'></span></button> <button class='delete-modal btn btn-danger btn-sm' data-id='" + data.id + "' data-title='" + data.title + "' data-body='" + data.body + "'><span class='glyphicon glyphicon-trash'></span></button></td>"+
-      "</tr>");
-    }
-  });
-});
-
-// form Delete function
-$(document).on('click', '.deleteUser', function() {
-  $('#footer_action_button').text(" Delete");
-  $('#footer_action_button').removeClass('glyphicon-check');
-  $('#footer_action_button').addClass('glyphicon-trash');
-  $('.actionBtn').removeClass('btn-success');
-  $('.actionBtn').addClass('btn-danger');
-  $('.actionBtn').addClass('delete');
-  $('.modal-title').text('Delete Post');
-  $('.id').text($(this).data('id'));
-  $('.deleteContent').show();
-  $('.form-horizontal').hide();
-  $('.title').html($(this).data('title'));
-  $('#myModal').modal('show');
-});
-
-$('.modal-footer').on('click', '.delete', function(){
-  $.ajax({
-    type: 'POST',
-    url: 'deletePost',
-    data: {
-      '_token': $('input[name=_token]').val(),
-      'id': $('.id').text()
-    },
-    success: function(data){
-       $('.post' + $('.id').text()).remove();
-    }
-  });
-});
-
-
-
-
+// Function Add(Save)
+// $("#add-modal").click(function() {
+// $.ajax({
+//   type: 'POST',
+//   url: '/users/addUser',
+//   data: {
+//     '_token': $('input[name=_token]').val(),
+//     'name': $('input[name=name]').val(),
+//     'email': $('input[name=email]').val(),
+//     'password': $('input[name=password]').val(),
+//     'roles': $('input[type=checkbox]').val(),
+//   },
+//   success: function(data){
+//     if ((data.errors)) {
+//       $('.error').removeClass('hidden');
+//       $('.error').text(data.errors.name);
+//       $('.error').text(data.errors.email);
+//     } else {
+//       alert('test no-error');
+//       $('.error').remove(); 
+//       $('#table').append("<tr class='user_" + data.id + "'>"+
+//       //"<td>" + data.id + "</td>"+
+//       "<td>" + data.name + "</td>"+
+//       "<td>" + data.email + "</td>"+
+//       "<td>" + data.created_at + "</td>"+
+//       "<td>" + 'User Role: TODO ' + "</td>"+
+//       "<td><button class='show-modal btn btn-info btn-sm' data-id='" + data.id + "' data-title='" + data.name + "' data-body='" + data.email + "'><span class='fa fa-eye'></span></button> <button class='edit-modal btn btn-warning btn-sm' data-id='" + data.id + "' data-title='" + data.name + "' data-body='" + data.email + "'><span class='glyphicon glyphicon-pencil'></span></button> <button class='delete-modal btn btn-danger btn-sm' data-id='" + data.id + "' data-title='" + data.name + "' data-body='" + data.email + "'><span class='glyphicon glyphicon-trash'></span></button></td>"+
+//       "</tr>");
+//     }
+//   },
+// });
+// $('#create').modal('hide');
+// $('#create').modal('hide'); 
+// alert("New user was added in database!");   
+// $('#name').val();
+// $('#email').val();
+// });
 }); // ОКОНЧАНИЕ ready()
+
+
+
+
+
 
 
   // Edit Data (Modal and function edit data)
@@ -756,21 +679,7 @@ $('.modal-footer').on('click', '.delete', function(){
 //   });
 // });
 </script>
-<script>
-$('#edit').on('show.bs.modal', function (event) {
 
-    var button = $(event.relatedTarget);
-    var title = button.data('mytitle');
-    var description = button.data('mydescription');
-    var cat_id = button.data('catid');
-
-    var modal = $(this);
-
-    modal.find('.modal-body #title').val(title);
-    modal.find('.modal-body #des').val(description);
-    modal.find('.modal-body #cat_id').val(cat_id);
-})
-</script>
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
