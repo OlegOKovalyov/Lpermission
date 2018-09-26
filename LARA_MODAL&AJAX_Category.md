@@ -1,13 +1,20 @@
-Complete CRUD Application with Laravel 5.5
+**Complete CRUD Application with Laravel 5.5**
 ________________________________________________________________________________
 
 
-***04 - Creating Categories Table and Bootstrap Modal Window with Form***
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Source: https://www.youtube.com/watch?v=w3EYwxlcSbE&index=5&list=PLB4AdipoHpxYmPdyI3e-yH58-3CS4qoAf
+<i> 04 - Creating Categories Table and Bootstrap Modal Window with Form </i>
+<i> 05 - Insert Data to Database from Bootstrap Modal and Display Them on Table </i>
+<i> 06 - Edit Data with Bootstrap Modal Window in Laravel 5 5 </i>
+<i> 07 - Update Data from Bootstrap Modal Window to database in Laravel </i>
+<i> 08 - Delete Data with Bootstrap Modal Window Confirm in Laravel 5.5 </i>
+--------------------------------------------------------------------------------
+Source 04: https://www.youtube.com/watch?v=w3EYwxlcSbE&index=5&list=PLB4AdipoHpxYmPdyI3e-yH58-3CS4qoAf
+Source 05: https://www.youtube.com/watch?v=4MmfrFzvIxE&list=PLB4AdipoHpxYmPdyI3e-yH58-3CS4qoAf&index=6
+Source 06: https://www.youtube.com/watch?v=Q2sXw_RCbis&list=PLB4AdipoHpxYmPdyI3e-yH58-3CS4qoAf&index=7
+Source 07: https://www.youtube.com/watch?v=_FGaDD-VuYI&index=8&list=PLB4AdipoHpxYmPdyI3e-yH58-3CS4qoAf
+Source 08: https://www.youtube.com/watch?v=DAitIOhxOOA&index=9&list=PLB4AdipoHpxYmPdyI3e-yH58-3CS4qoAf
 Author: Code Inspire
 Published: on Jan 28, 2018
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 
 
@@ -117,7 +124,7 @@ $ php artisan route:list
 
 
  Method		| URI					| Name					| Action
--------------------------------------------------------------------------------------------------------------
+------------|-----------------------|-----------------------|------------------------------------------------
  POST		| categories			| categories.store 		| App\Http\Controllers\CategoryController@store
  GET |HEAD	| categories			| categories.index 		| App\Http\Controllers\CategoryController@index
  GET |HEAD	| categories/create		| categories.create 	| App\Http\Controllers\CategoryController@create 
@@ -125,7 +132,7 @@ $ php artisan route:list
  GET |HEAD 	| categories/{category} | categories.show 		| App\Http\Controllers\CategoryController@show 
  DELETE 	| categories/{category	| categories.destroy 	| App\Http\Controllers\CategoryController@destroy 
  GET |HEAD  | categories/{category}/edit | category.edit 	| App\Http\Controllers\CategoryController@edit 
- ------------------------------------------------------------------------------------------------------------
+
 
 
 ПЕРВЫЙ МЕТОД КОНТРОЛЛЕРА index()
@@ -140,7 +147,7 @@ public function index()
 }
 ```
 
-ОТОБРАЖАЕМ КАТЕГОРИЙ НА ЭКРАНЕ ВО ВТОРОМ ПРИБЛИЖЕНИИ
+ОТОБРАЖАЕМ КАТЕГОРИИ НА ЭКРАНЕ ВО ВТОРОМ ПРИБЛИЖЕНИИ
 ----------------------------------------------------
 
 10. Теперь можно продолжить разработку кода файла /resources/views/categories/index.blade.php.
@@ -152,6 +159,7 @@ public function index()
 @section('title', '| Categories')
 
 @section('content')
+
 
 <div class="user-administration">
     <h1><i class="fa fa-list"></i> Category Administration <a href="{{ route('roles.index') }}" class="btn btn-default pull-right">Roles</a>

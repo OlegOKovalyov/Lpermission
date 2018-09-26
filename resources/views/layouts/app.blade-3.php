@@ -480,18 +480,18 @@ $(document).ready(function() {
   //   return(vals); 
   // }  
 
-  // function returnCheckboxes(divId) { // выводит массив из названий выбранных меток <input type="checkbox"...>
-  //   var chkbox = document.getElementsByName('roles[]');
-  //   var vals = "";
-  //   for (var i=0, n=chkbox.length;i<n;i++) {
-  //       if (chkbox[i].checked) 
-  //       {
-  //         var label = divId + " " + ".roles_chbxs_edit" + i;
-  //         vals += " " + $(label).text();
-  //       }
-  //   }
-  //   return(vals); 
-  // }  
+  function returnCheckboxes(divId) { // выводит массив из названий выбранных меток <input type="checkbox"...>
+    var chkbox = document.getElementsByName('roles[]');
+    var vals = "";
+    for (var i=0, n=chkbox.length;i<n;i++) {
+        if (chkbox[i].checked) 
+        {
+          var label = divId + " " + ".roles_chbxs_edit" + i;
+          vals += " " + $(label).text();
+        }
+    }
+    return(vals); 
+  }  
 
   function parseDateInPhpFormat() { // преобразует дату из '2018-09-23 08:58:34' в 'September 23, 2018 8:57am'
     var d = new Date(); 
@@ -517,8 +517,8 @@ $("#add-modal").click(function(e){
     $.ajax({
       dataType: 'json',
       type:'POST',
-
-      url: '/users/addUser',
+      // url: "{{ url('/users/addUser') }}",
+      url: '{{ URL::to("users/addUser") }}',
       data: data,
       success: function(result) {
         if ((result.errors)) {
@@ -533,7 +533,7 @@ $("#add-modal").click(function(e){
             "<td>" + result.name + "</td>"+
             "<td>" + result.email + "</td>"+
             "<td>" + parseDateInPhpFormat() + "</td>"+
-
+            // {{-- "<td>" + "{{ $user->created_at->format('F d, Y h:ia') }}" + "</td>"+ // работает, но ломает другие страницы --}}
             "<td>" + returnCheckboxSelect() + "</td>"+
             "<td class='with-buttons'>" +
             
@@ -596,13 +596,19 @@ $('#edit-modal').click(function(e) {
   })  
   e.preventDefault();
   var serdata = $(this).serialize(); console.log(serdata);
-
+  // var url = $(this).attr('action');
   $.ajax({
     dataType: 'json',
     type: 'POST',
-
+    // url: "{{ url('/editUser') }}",
+    // url: "{{ url('/users/editUser') }}",
+    // url: '/editUser',
+    ///////url: "{{ url('/users/editUser') }}",
+    // url: "{{ url('/users/editUser') }}",
     url: '/users/' + serdata.id + '/editUser',
-
+    // url: url,
+    // url: "/users/" + data.id + "/editUser') }}",
+    // data: serdata,
     data: {
       // '_token': $('input[name=_token]').val(),
       'id': $("#fid").val(),

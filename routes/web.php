@@ -25,18 +25,24 @@ Auth::routes();
 Route::get('/', 'HomeController@index')->name('home');
 
 
-Route::resource('users', 'UserController');
+// Route::resource('users', 'UserController');
 
-Route::resource('categories', 'CategoryController');
+Route::resource('categories','CategoryController');
   
 
 Route::group(['middleware' => ['web']], function() {
   Route::resource('users','UserController');
-  Route::post('/users/addUser', 'UserController@addUser');
+  Route::post('/users/addUser','UserController@addUser');
+  Route::post('/users/editUser','UserController@editUser');
+
+  Route::get('/users/edit','UserController@edit');
+  Route::post('/users/update','UserController@update');
+
+
   // Route::post('/users/addUser', 'UserController@addUser', ['addUser'=>'users.create']);
   Route::post('/users/{id}/editUser', 'UserController@editUser');
   // ///////////////////Route::put('/users/editUser', 'UserController@editUser', ['editUser'=>'users.update']);
-  Route::put('/users/{user}/edit', 'UserController@update', ['update'=>'users.update']);
+  Route::post('/users/{id}/edit', 'UserController@update', ['update'=>'users.update']);
 
 
 // Route::put('/editUser/{id?}',function(Request $request,$id){

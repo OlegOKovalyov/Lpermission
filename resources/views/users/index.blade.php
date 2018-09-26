@@ -32,9 +32,10 @@
                     <td>{{  $user->roles()->pluck('name')->implode(' ') }}</td>{{-- Retrieve array of roles associated to a user and convert to string --}}
                     <td class="with-buttons">
                     <!-- <a href="{{ route('users.edit', $user->id) }}" class="btn btn-info pull-left edit-modal" data-toggle="modal" data-target="#userEditModal" style="margin-right: 3px;">Edit</a> -->
-                    <a  href="{{ route('users.edit', $user->id) }}" class="edit-user-modal btn btn-primary btn-xs edit" data-id="{{$user->id}}" data-name="{{$user->name}}" data-email="{{$user->email}}" data-toggle="modal" data-target="#editUser">
+
+                    <!-- <a  href="{{ route('users.edit', $user->id) }}" class="edit-user-modal btn btn-primary btn-xs edit" data-id="{{$user->id}}" data-name="{{$user->name}}" data-email="{{$user->email}}" data-toggle="modal" data-target="#editUser">
                     <span class="glyphicon glyphicon-edit"></span> Edit
-                    </a>
+                    </a> -->
 
                     <button class="edit-user-modal btn btn-primary btn-xs edit" data-id="{{$user->id}}" data-name="{{$user->name}}" data-email="{{$user->email}}" data-toggle="modal" data-target="#editUser"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
 
@@ -77,7 +78,7 @@
 
                 <form class="form-horizontal" role="form" data-toggle="validator">
                     {{ csrf_field() }}
-                    <div class="form-group row add">
+                    <div class="form-group row add-row">
                         <label class="control-label col-sm-2" for="name">Name :</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="name" name="name" placeholder="Name" data-validate="true" required>
@@ -154,7 +155,7 @@
                             <input type="text" class="form-control" id="fid" name="fid" disabled>
                         </div>
                     </div>             
-                    <div class="form-group row edit">
+                    <div class="form-group row edit-row">
                         <label class="control-label col-sm-2" for="name">Name :</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" name="name" placeholder="Name" required="">
@@ -179,7 +180,7 @@
                     <div class="form-group">
                       {{ Form::label('password', 'Password :', array('class' => 'control-label col-sm-2')) }}
                       <div class="col-sm-10">
-                          {{ Form::password('password', array('id' => 'password', 'class' => 'form-control',  'data-minlength' => '6', 'placeholder' => "Password", 'required')) }}
+                          {{ Form::password('password', array('id' => 'password_edit', 'class' => 'form-control',  'data-minlength' => '6', 'placeholder' => "Password", 'required')) }}
                       </div>
                     </div>
 
