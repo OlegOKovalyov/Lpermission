@@ -345,13 +345,19 @@ public function index()
 РЕДАКТИРОВАНИЕ КАТЕГОРИИ
 =========================
 
-1. Создаем кнопку 'Edit' в файле /resources/views/categories/index.blade.php
+СОЗДАЕМ КНОПКУ 'Edit'
+----------------------
+
+1. Создаем кнопку 'Edit' в файле /resources/views/categories/index.blade.php:
 
 <td>
 	<button class="btn btn-info">Edit</button>
 	/
 	Delete
 </td>
+
+СОЗДАЕМ НОВОЕ МОДАЛЬНОЕ ОКНО
+-----------------------------
 
 2. Копируем модуль <!-- Modal -->, который мы создали для добавления категорий и
 размещаем его сразу же под ним. Вносим следующие изменения:
@@ -383,8 +389,8 @@ public function index()
 
 4) В нашей новой модальной форме меняем название заголовка и клавиши submit:
 
-* с New Category на Edit Category
-* с Save на Save Changes
+* с 'New Category' на 'Edit Category'
+* с 'Save' на 'Save Changes'
 
 5) Меняем action формы на:
 
@@ -394,26 +400,30 @@ public function index()
 
 <form action="{{ route('categories.update','test') }}" method="post"></form>
 
+ФУНКЦИОНАЛ КНОПКИ 'Edit' ОСНОВАН НА jQuery
+-------------------------------------------
+
 3. Чтобы обработать кнопку 'Edit', которых много на странице, необходимо
 снова обратиться к документации Bootstrap 3.3.7 >> JavaScript >> Modal >>
 раздел "Varying modal content based on trigger button", откуда берем код:
 
-```php
-$('#exampleModal').on('show.bs.modal', function (event) {
-  var button = $(event.relatedTarget) // Button that triggered the modal
-  var recipient = button.data('whatever') // Extract info from data-* attributes
-  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-  var modal = $(this)
-  modal.find('.modal-title').text('New message to ' + recipient)
-  modal.find('.modal-body input').val(recipient)
-})
-```
+<script>
+	$('#exampleModal').on('show.bs.modal', function (event) {
+	  var button = $(event.relatedTarget) // Button that triggered the modal
+	  var recipient = button.data('whatever') // Extract info from data-* attributes
+	  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+	  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+	  var modal = $(this)
+	  modal.find('.modal-title').text('New message to ' + recipient)
+	  modal.find('.modal-body input').val(recipient)
+	})
+</script>
+
 и вставляем его в конец файла /resources/views/layouts/app.blade.php после всех
 js-скриптов между тегами <script></script>, несколько видоизменив его:
 
-```php
-$('#edit').on('show.bs.modal', function (event) {
+<script>
+	$('#edit').on('show.bs.modal', function (event) {
 
 	console.log('Modal Opened'); // Сообщение 'Modal Opened' можно увидеть в консоли инспектора браузера
 	  var button = $(event.relatedTarget) // Button that triggered the modal
@@ -423,13 +433,14 @@ $('#edit').on('show.bs.modal', function (event) {
 	  var modal = $(this)
 	  modal.find('.modal-title').text('New message to ' + recipient)
 	  modal.find('.modal-body input').val(recipient)
-})
-```
+	})
+</script>
+
 В нашу кнопку 'Edit' добавляем новый атрибут, например, data-mytitle="hello" и 
 соответственно меняем наш jQuery-код:
 
-```php
-$('#edit').on('show.bs.modal', function (event) {
+<script>
+	$('#edit').on('show.bs.modal', function (event) {
 
 	  var button = $(event.relatedTarget) // Button that triggered the modal
 	  var title = button.data('mytitle') // Extract info from data-* attributes
@@ -438,16 +449,17 @@ $('#edit').on('show.bs.modal', function (event) {
 	  var modal = $(this)
 
 	  modal.find('.modal-body #title').val(title)
-})
-```
+	})
+</script>
+
 Видим, как 'hello' появляется в поле 'title' при нажатии на каждую кнопку 'Edit'.
 Видоизменяем наш новый атрибут data-mytitle="{{ $cat->title}}", и видим, что в 
 тех же полях 'title' уже содержатся реальные заголовки из нашей БД. Аналогично
 проворачиваем и для поля 'description' только добавив id='des' к input-полю для 
 'description':
 
-```php
-$('#edit').on('show.bs.modal', function (event) {
+<script>
+	$('#edit').on('show.bs.modal', function (event) {
 
 	  var button = $(event.relatedTarget);
 	  var title = button.data('mytitle');
@@ -457,11 +469,15 @@ $('#edit').on('show.bs.modal', function (event) {
 
 	  modal.find('.modal-body #title').val(title);
 	  modal.find('.modal-body #des').val(description);
-})
-```
+	})
+</script>
+
 Если мы нажмем клавишу 'Save Changes', то получим ошибку:
 
 `No message`
+
+МЕТОД КОНТРОЛЛЕРА update() + ОТЛАДКА
+-------------------------------------
 
 4. Создаем метод update() контроллера CategoryController. Сначала убираем
 параметр $id и вводим проверочную хелпер-функцию dd():
@@ -505,11 +521,11 @@ public function update(Request $request)
 В нашу кнопку 'Edit' добавляем еще один параметр data-catid="{{ $cat->id }}" и 
 соответственно в наш js-скрипт:
 
-```php
+<script>
 var cat_id = button.data('catid');
 ...
 modal.find('.modal-body #cat_id').val(cat_id);
-```
+</script>
 
 И теперь наш метод update() будет выглядеть так:
 
@@ -524,3 +540,95 @@ public function update(Request $request)
 }
 ```
 ВСЕ РАБОТАЕТ!!!
+
+
+
+
+УДАЛЕНИЕ КАТЕГОРИИ
+===================
+
+1. Создаем кнопку 'Delete' в файле /resources/views/categories/index.blade.php:
+
+<button class="btn btn-danger" data-toggle="modal" data-target="#delete">Delete</button>
+
+2. Копируем модуль <!-- Modal -->, который мы создали для редактирования категорий и
+размещаем его сразу же под ним. Вносим следующие изменения:
+
+1) Mеняем id модального окна с 'edit' на 'delete'.
+
+2) Добавляем новые атрибуты для кнопки 'Delete':
+
+`data-toggle="modal" data-target="#delete"`
+
+3) Удаляем директиву @include('categories.form').
+
+4) В нашей новой модальной форме меняем название заголовка и клавиши submit, а
+также другие изменения:
+
+* с 'Edit Category' на 'Delete Confirmation'
+* добавляем класс для заголовка 'text-center'
+* добавляем в тело модального окна параграф:
+<p class="alert alert-danger text-center">
+	<strong>Are you sure you want to delete this?</strong>
+</p>
+* с 'Save Changes' на 'Yes, Delete'
+* с 'Close' на 'No, Cancel'
+* меняем класс клавиши submit с 'primary' на 'warning'
+
+5) Меняем action формы на:
+
+<form action="{{ route('categories.destroy') }}" method="post"></form>
+
+6) Задаем:
+
+{{ method_field('delete') }}
+
+3. Создаем метод destroy() в контроллере CategoryController:
+
+```php
+public function destroy($id)
+ {
+ 	echo 'Delete data'; // проверка срабатывания метода в браузере при нажатии клавиши 'Yes, Delete'
+ } 
+```
+
+4. Теперь нам нужно передать id категории с помощью jQuery аналогично как мы 
+делали для метода update(). Поэтому создаем дубликат js-скрипта для клавиши
+'Edit' и производим в нем необходимые изменения, чтобы работала клавиша 'Delete'
+(а именно, убираем строки для 'title' и 'description':
+
+<script>
+  $('#delete').on('show.bs.modal', function (event) {
+
+      var button = $(event.relatedTarget);
+
+      var cat_id = button.data('catid');
+      var modal = $(this);
+
+      modal.find('.modal-body #cat_id').val(cat_id);
+  })
+</script>
+
+5. Добавляем кнопке 'Delete' из списка категорий новый атрибут `data-catid="{{ $cat->id }}"`.
+Проверяем в инспекторе браузера при открытии списка категорий - мы видим, что
+наша клавиша 'Delete' получила соответствующее числовое значение для нового параметра, 
+например `data-catid=9`. После нажатия клавиши 'Yes, Delete' также в инспекторе
+видим, что атрибут value скрытого поля также содержит соответствующее конкретное
+значение, например:
+
+<input type="hidden" name="category_id" id="cat_id" value="9">
+
+6. Завершаем разработку метода delete():
+
+```php
+public function destroy(Request $request)
+ {
+        //    
+        // echo 'Delete data'; // проверка срабатывания метода в браузере при нажатии клавиши 'Yes, Delete'
+        // dd($request->category_id); // видим, что категория выбрана в БД для последующего удаления
+        $categories = Category::findOrFail($request->category_id); // соответствует значению name hidden-поля в форме      
+        $categories->delete();
+        return back();   
+ } 
+```
+

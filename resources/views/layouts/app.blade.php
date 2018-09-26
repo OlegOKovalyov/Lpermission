@@ -757,19 +757,30 @@ $('.modal-footer').on('click', '.delete', function(){
 // });
 </script>
 <script>
-$('#edit').on('show.bs.modal', function (event) {
+  $('#edit').on('show.bs.modal', function (event) {
 
-    var button = $(event.relatedTarget);
-    var title = button.data('mytitle');
-    var description = button.data('mydescription');
-    var cat_id = button.data('catid');
+      var button = $(event.relatedTarget);
+      var title = button.data('mytitle');
+      var description = button.data('mydescription');
+      var cat_id = button.data('catid');
 
-    var modal = $(this);
+      var modal = $(this);
 
-    modal.find('.modal-body #title').val(title);
-    modal.find('.modal-body #des').val(description);
-    modal.find('.modal-body #cat_id').val(cat_id);
-})
+      modal.find('.modal-body #title').val(title);
+      modal.find('.modal-body #des').val(description);
+      modal.find('.modal-body #cat_id').val(cat_id);
+  })
+</script>
+<script>
+  $('#delete').on('show.bs.modal', function (event) {
+
+      var button = $(event.relatedTarget);
+
+      var cat_id = button.data('catid');
+      var modal = $(this);
+
+      modal.find('.modal-body #cat_id').val(cat_id);
+  })
 </script>
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.

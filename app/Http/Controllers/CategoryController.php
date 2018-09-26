@@ -91,8 +91,17 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
         //
+        
+        // echo 'Delete data'; // проверка срабатывания метода в браузере при нажатии клавиши 'Yes, Delete'
+
+        // dd($request->category_id); // видим, что категория выбрана в БД для последующего удаления
+
+        $categories = Category::findOrFail($request->category_id); // соответствует значению name hidden-поля в форме       
+        $categories->delete();
+
+        return back();        
     }
 }

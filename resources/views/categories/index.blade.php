@@ -25,7 +25,8 @@
 					<td>
 						<button class="btn btn-info" data-mytitle="{{ $cat->title }}" data-mydescription="{{ $cat->description }}" data-catid="{{ $cat->id }}" data-toggle="modal" data-target="#edit">Edit</button>
 						/
-						 Delete</td>
+						<button class="btn btn-danger" data-catid="{{ $cat->id }}" data-toggle="modal" data-target="#delete">Delete</button>
+					</td>
 				</tr>
 			@endforeach
 		</tbody>
@@ -80,7 +81,33 @@
 	      </form>
 	    </div>
 	  </div>
-	</div>	
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title text-center" id="myModalLabel">Delete Confirmation</h4>
+	      </div>
+	      <form action="{{ route('categories.destroy', $cat->id) }}" method="post">
+	      	{{ method_field('delete') }}
+	      	{{ csrf_field() }}
+		      <div class="modal-body">
+		      	<p class="alert alert-danger text-center">
+		      		<strong>Are you sure you want to delete this?</strong>
+		      	</p>
+		      	<input type="hidden" name="category_id" id="cat_id" value="">
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">No, Cancel</button>
+		        <button type="submit" class="btn btn-warning">Yes, Delete</button>
+		      </div>
+	      </form>
+	    </div>
+	  </div>
+	</div>		
 
 </div>
 
