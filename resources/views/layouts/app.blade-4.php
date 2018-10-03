@@ -63,7 +63,7 @@ desired effect
   <header class="main-header">
 
     <!-- Logo -->
-    <a href="{{ route('home') }}" class="logo">
+    <a href="index2.html" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>A</b>LT</span>
       <!-- logo for regular state and mobile devices -->
@@ -272,8 +272,6 @@ desired effect
 
         <li><a href="{{ route('categories.index') }}"><i class="fa fa-link"></i> <span>Categories</span></a></li>
 
-        <li><a href="#"><i class="fa fa-link"></i> <span>Students</span></a></li>
-
 
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Manage Users</span>
@@ -437,7 +435,7 @@ desired effect
 
 <script src="{{ asset('js/date-phpformat-func.js') }}"></script>
 
-<!-- <script src="{{ asset('js/ajax-crud-user.js') }}" ></script> -->
+<script src="{{ asset('js/ajax-crud-user.js') }}" ></script>
 
 <script>
 /* {{-- Ajax Form Delete --}} */
@@ -469,18 +467,18 @@ $(document).ready(function() {
     return(vals); 
   }
 
-  function returnCheckboxSelectEdit() { // выводит массив из названий выбранных меток <input type="checkbox"...>
-    var chkbox = document.getElementsByName('roles[]');
-    var vals = "";
-    for (var i=0, n=chkbox.length;i<n;i++) {
-        if (chkbox[i].checked) 
-        {
-          var label = ".roles_chbxs_edit" + i;
-          vals += " " + $(label).text();
-        }
-    }
-    return(vals); 
-  }  
+  // function returnCheckboxSelectEdit() { // выводит массив из названий выбранных меток <input type="checkbox"...>
+  //   var chkbox = document.getElementsByName('roles[]');
+  //   var vals = "";
+  //   for (var i=0, n=chkbox.length;i<n;i++) {
+  //       if (chkbox[i].checked) 
+  //       {
+  //         var label = ".roles_chbxs_edit" + i;
+  //         vals += " " + $(label).text();
+  //       }
+  //   }
+  //   return(vals); 
+  // }  
 
   // function returnCheckboxes(divId) { // выводит массив из названий выбранных меток <input type="checkbox"...>
   //   var chkbox = document.getElementsByName('roles[]');
@@ -521,8 +519,6 @@ $("#add-modal").click(function(e){
       type:'POST',
 
       url: '/users/addUser',
-      // url: 'URL to(/users/addUser',
-      // url: '{{ route("users.addUser") }}',
       data: data,
       success: function(result) {
         if ((result.errors)) {
@@ -537,6 +533,7 @@ $("#add-modal").click(function(e){
             "<td>" + result.name + "</td>"+
             "<td>" + result.email + "</td>"+
             "<td>" + parseDateInPhpFormat() + "</td>"+
+
             "<td>" + returnCheckboxSelect() + "</td>"+
             "<td class='with-buttons'>" +
             
@@ -581,35 +578,29 @@ $(document).on('click', '.edit-user-modal', function() {
   var name = $(this).data('name');
   var email = $(this).data('email');
   var password = $(this).data('password');
-  var roles = $(this).data('roles'); console.log(id);console.log(name);console.log(email);
-  console.log(roles);
   $('#editUser').modal('show');
 
-  $('#editUser #fid').val(id);
+  $('#fid').val(id);
   $('#editUser input[name=name]').val(name);
   $('#editUser input[name=email]').val(email);
   $('#editUser input[name=password]').val(password);
-  // $('#editUser input[name=roles[]]').val(roles); console.log(roles)
   
   // $('#editUser').modal('show');
 });
 
 $('#edit-modal').click(function(e) {
-  // console.log($('#editUser .form-horizontal').serialize()); 
-  var serdata = $(this).serialize(); console.log(serdata);
   $.ajaxSetup({
     headers: {
       'X-CSRF-TOKEN': $('input[name=_token]').val()
     }
   })  
   e.preventDefault();
-  var serdata = $(this).serialize();
+  var serdata = $(this).serialize(); console.log(serdata);
 
   $.ajax({
     dataType: 'json',
     type: 'POST',
 
-    // url: '/users/' + serdata.id + '/editUser',
     url: '/users/' + serdata.id + '/editUser',
 
     data: {
@@ -619,48 +610,7 @@ $('#edit-modal').click(function(e) {
       'email': $('#editUser input[name=email]').val(),
       'password': $('#editUser input[name=password]').val()
     },
-    success: function(result) { //console.log(result);
-
-        if ((result.errors)) {
-          $('#editUser .alert-warning').html('');
-          $.each(result.errors, function(key, value){
-            $('#editUser .alert-warning').show();
-            $('#editUser .alert-warning').append('<li>' + value + ' ' + '</li>');
-          });
-        } else { console.log(result);
-
-          $('.error').remove(); 
-          $('#table .user_' + result.id).replaceWith("<tr class='user_" + result.id + "'>"+
-            "<td>" + result.name + "</td>"+
-            "<td>" + result.email + "</td>"+
-            "<td>" + parseDateInPhpFormat() + "</td>"+
-            "<td>" + returnCheckboxSelectEdit() + "</td>"+
-            "<td class='with-buttons'>" +
-            
-              "<a  href='/users/" + result.id + "/edit' class='edit-user-modal btn btn-primary btn-xs edit' data-id='" + result.id + "' data-name='" + result.name + "' data-email='" + result.email + "' data-toggle='modal' data-target='#userEditModal'>" +
-                  "<span class='glyphicon glyphicon-edit'></span>" + " Edit" +
-              "</a>" +
-
-              "<form method='POST' action='/users/" + result.id + "' accept-charset='UTF-8'>" + "<input name='_method' type='hidden' value='DELETE'>" + "<input name='_token' type='hidden'>" +
-                "<button onclick='return confirm(" + "Are you sure you want to delete " + result.name + "?" + ")' class='btn btn-danger btn-xs' name='delete' data-id='" + result.id + "' data-title='" + result.name + "' data-body='" + result.email + "'>" +
-                  "<i class='glyphicon glyphicon-remove'>" + "</i>" + "Delete" + 
-                "</button>" + 
-              "</form>" +
-
-            "</td>" +
-          "</tr>");
-          $('#editUser .alert-warning').html('');
-          $('#editUser .alert-warning').hide();
-          $('#editUser .alert-success').html('\"<strong>' +  result.name + '</strong>\" has been updated successfully!');
-          $('#editUser .alert-success').fadeIn("slow");
-          setTimeout(function () {
-            $('#editUser .alert-success').fadeOut("slow");
-            $('#editUser .alert-success').hide();
-            $('#editUser').modal('hide');
-          }, 2000);
-          // alert('\"' +  result.name + '\" has been created successfully!');
-          $('#editUser .form-horizontal').trigger('reset');
-
+    success: function(data) {console.log(serdata);
       // $('.post' + data.id).replaceWith(" "+
       // "<tr class='post" + data.id + "'>"+
       // "<td>" + data.id + "</td>"+
@@ -669,7 +619,6 @@ $('#edit-modal').click(function(e) {
       // "<td>" + data.created_at + "</td>"+
       // "<td><button class='show-modal btn btn-info btn-sm' data-id='" + data.id + "' data-title='" + data.title + "' data-body='" + data.body + "'><span class='fa fa-eye'></span></button> <button class='edit-modal btn btn-warning btn-sm' data-id='" + data.id + "' data-title='" + data.title + "' data-body='" + data.body + "'><span class='glyphicon glyphicon-pencil'></span></button> <button class='delete-modal btn btn-danger btn-sm' data-id='" + data.id + "' data-title='" + data.title + "' data-body='" + data.body + "'><span class='glyphicon glyphicon-trash'></span></button></td>"+
       // "</tr>");
-      }
     }
   });
 });

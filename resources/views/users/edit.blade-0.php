@@ -43,9 +43,12 @@
             <span class="hidden id"></span>
         </div>
         <div class="modal-footer">
-        {{ Form::submit('Update php', array('class' => 'btn btn-primary actionBtn edit pull-left', 'data-dismiss' => 'modal')) }}
+        {{ Form::submit('Update php', array('class' => 'btn btn-primary actionBtn edit pull-left', 'data-dismiss' => 'modal', 'type'=>'submit', 'id'=>'edit-modal', 'data-method'=>'serialize')) }}
         <span id="footer_action_button" class='glyphicon'> </span>
         <button type="button" class="btn btn-default pull-right" data-dismiss="modal">
+        <!-- <button class="btn btn-primary" type="submit" id="edit-modal">
+            <span class="glyphicon glyphicon-edit"></span> Update
+        </button> -->
         <span class='glyphicon glyphicon-remove'>Close</span>        
         </div>
 

@@ -469,18 +469,18 @@ $(document).ready(function() {
     return(vals); 
   }
 
-  function returnCheckboxSelectEdit() { // выводит массив из названий выбранных меток <input type="checkbox"...>
-    var chkbox = document.getElementsByName('roles[]');
-    var vals = "";
-    for (var i=0, n=chkbox.length;i<n;i++) {
-        if (chkbox[i].checked) 
-        {
-          var label = ".roles_chbxs_edit" + i;
-          vals += " " + $(label).text();
-        }
-    }
-    return(vals); 
-  }  
+  // function returnCheckboxSelectEdit() { // выводит массив из названий выбранных меток <input type="checkbox"...>
+  //   var chkbox = document.getElementsByName('roles[]');
+  //   var vals = "";
+  //   for (var i=0, n=chkbox.length;i<n;i++) {
+  //       if (chkbox[i].checked) 
+  //       {
+  //         var label = ".roles_chbxs_edit" + i;
+  //         vals += " " + $(label).text();
+  //       }
+  //   }
+  //   return(vals); 
+  // }  
 
   // function returnCheckboxes(divId) { // выводит массив из названий выбранных меток <input type="checkbox"...>
   //   var chkbox = document.getElementsByName('roles[]');
@@ -596,7 +596,7 @@ $(document).on('click', '.edit-user-modal', function() {
 
 $('#edit-modal').click(function(e) {
   // console.log($('#editUser .form-horizontal').serialize()); 
-  var serdata = $(this).serialize(); console.log(serdata);
+  var serdata = $(this).serialize();
   $.ajaxSetup({
     headers: {
       'X-CSRF-TOKEN': $('input[name=_token]').val()
@@ -619,48 +619,7 @@ $('#edit-modal').click(function(e) {
       'email': $('#editUser input[name=email]').val(),
       'password': $('#editUser input[name=password]').val()
     },
-    success: function(result) { //console.log(result);
-
-        if ((result.errors)) {
-          $('#editUser .alert-warning').html('');
-          $.each(result.errors, function(key, value){
-            $('#editUser .alert-warning').show();
-            $('#editUser .alert-warning').append('<li>' + value + ' ' + '</li>');
-          });
-        } else { console.log(result);
-
-          $('.error').remove(); 
-          $('#table .user_' + result.id).replaceWith("<tr class='user_" + result.id + "'>"+
-            "<td>" + result.name + "</td>"+
-            "<td>" + result.email + "</td>"+
-            "<td>" + parseDateInPhpFormat() + "</td>"+
-            "<td>" + returnCheckboxSelectEdit() + "</td>"+
-            "<td class='with-buttons'>" +
-            
-              "<a  href='/users/" + result.id + "/edit' class='edit-user-modal btn btn-primary btn-xs edit' data-id='" + result.id + "' data-name='" + result.name + "' data-email='" + result.email + "' data-toggle='modal' data-target='#userEditModal'>" +
-                  "<span class='glyphicon glyphicon-edit'></span>" + " Edit" +
-              "</a>" +
-
-              "<form method='POST' action='/users/" + result.id + "' accept-charset='UTF-8'>" + "<input name='_method' type='hidden' value='DELETE'>" + "<input name='_token' type='hidden'>" +
-                "<button onclick='return confirm(" + "Are you sure you want to delete " + result.name + "?" + ")' class='btn btn-danger btn-xs' name='delete' data-id='" + result.id + "' data-title='" + result.name + "' data-body='" + result.email + "'>" +
-                  "<i class='glyphicon glyphicon-remove'>" + "</i>" + "Delete" + 
-                "</button>" + 
-              "</form>" +
-
-            "</td>" +
-          "</tr>");
-          $('#editUser .alert-warning').html('');
-          $('#editUser .alert-warning').hide();
-          $('#editUser .alert-success').html('\"<strong>' +  result.name + '</strong>\" has been updated successfully!');
-          $('#editUser .alert-success').fadeIn("slow");
-          setTimeout(function () {
-            $('#editUser .alert-success').fadeOut("slow");
-            $('#editUser .alert-success').hide();
-            $('#editUser').modal('hide');
-          }, 2000);
-          // alert('\"' +  result.name + '\" has been created successfully!');
-          $('#editUser .form-horizontal').trigger('reset');
-
+    success: function(result) {console.log(result);
       // $('.post' + data.id).replaceWith(" "+
       // "<tr class='post" + data.id + "'>"+
       // "<td>" + data.id + "</td>"+
@@ -669,7 +628,6 @@ $('#edit-modal').click(function(e) {
       // "<td>" + data.created_at + "</td>"+
       // "<td><button class='show-modal btn btn-info btn-sm' data-id='" + data.id + "' data-title='" + data.title + "' data-body='" + data.body + "'><span class='fa fa-eye'></span></button> <button class='edit-modal btn btn-warning btn-sm' data-id='" + data.id + "' data-title='" + data.title + "' data-body='" + data.body + "'><span class='glyphicon glyphicon-pencil'></span></button> <button class='delete-modal btn btn-danger btn-sm' data-id='" + data.id + "' data-title='" + data.title + "' data-body='" + data.body + "'><span class='glyphicon glyphicon-trash'></span></button></td>"+
       // "</tr>");
-      }
     }
   });
 });

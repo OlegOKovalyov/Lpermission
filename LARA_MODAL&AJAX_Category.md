@@ -2,18 +2,19 @@
 ________________________________________________________________________________
 
 
-<i> 04 - Creating Categories Table and Bootstrap Modal Window with Form </i>
-<i> 05 - Insert Data to Database from Bootstrap Modal and Display Them on Table </i>
-<i> 06 - Edit Data with Bootstrap Modal Window in Laravel 5 5 </i>
-<i> 07 - Update Data from Bootstrap Modal Window to database in Laravel </i>
-<i> 08 - Delete Data with Bootstrap Modal Window Confirm in Laravel 5.5 </i>
+<small><i>
+04 - Creating Categories Table and Bootstrap Modal Window with Form <br>
+05 - Insert Data to Database from Bootstrap Modal and Display Them on Table <br>
+06 - Edit Data with Bootstrap Modal Window in Laravel 5 5 <br>
+07 - Update Data from Bootstrap Modal Window to database in Laravel <br>
+08 - Delete Data with Bootstrap Modal Window Confirm in Laravel 5.5 <br></i></small>
 --------------------------------------------------------------------------------
 Source 04: https://www.youtube.com/watch?v=w3EYwxlcSbE&index=5&list=PLB4AdipoHpxYmPdyI3e-yH58-3CS4qoAf
 Source 05: https://www.youtube.com/watch?v=4MmfrFzvIxE&list=PLB4AdipoHpxYmPdyI3e-yH58-3CS4qoAf&index=6
 Source 06: https://www.youtube.com/watch?v=Q2sXw_RCbis&list=PLB4AdipoHpxYmPdyI3e-yH58-3CS4qoAf&index=7
 Source 07: https://www.youtube.com/watch?v=_FGaDD-VuYI&index=8&list=PLB4AdipoHpxYmPdyI3e-yH58-3CS4qoAf
 Source 08: https://www.youtube.com/watch?v=DAitIOhxOOA&index=9&list=PLB4AdipoHpxYmPdyI3e-yH58-3CS4qoAf
-Author: Code Inspire
+Author: Code Inspire<br>
 Published: on Jan 28, 2018
 
 
@@ -120,7 +121,7 @@ Route::resource('category', 'CategoryController');
 
 $ php artisan route:list
 
-и наблюдаем все созданные для маршруты (у автора везде в ед.числе 'category'):
+и наблюдаем все созданные маршруты (у автора везде в ед.числе 'category'):
 
 
  Method		| URI					| Name					| Action

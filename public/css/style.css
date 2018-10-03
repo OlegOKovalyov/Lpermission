@@ -32,12 +32,17 @@ p.teaser {
 	margin-bottom: 5px;
 }
 
+#table thead tr th:last-child {
+	text-align: center;
+}
+
 .with-buttons {
 	display: -webkit-flex;
 	display: -moz-flex;
 	display: -ms-flex;
 	display: -o-flex;
 	display: flex;
+	justify-content: center;
 }
 
 .with-buttons .edit-user-modal {
